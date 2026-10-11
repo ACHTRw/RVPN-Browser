@@ -404,17 +404,120 @@ def stage_android(p: Patcher) -> None:
             p.changed.append(rel)
     p.log("android launcher icons replaced")
 
-    # RVPN Java sources + resources shipped inside the APK.
+    # --- C++: proxy configuration service ---------------------------------
+    cpp_dir = integration / "cpp"
+    if cpp_dir.exists():
+        for item in sorted(cpp_dir.glob("*.cc")) + sorted(cpp_dir.glob("*.h")):
+            dest = p.src / "chrome" / "browser" / "net" / item.name
+            if not p.check_only:
+                dest.write_bytes(item.read_bytes())
+            p.changed.append(f"chrome/browser/net/{item.name}")
+
+        build_gn = p.path("chrome/browser/net/BUILD.gn")
+        text = build_gn.read_text(encoding="utf-8")
+        if "rvpn_proxy_config_service.cc" in text:
+            p.skipped.append("chrome/browser/net/BUILD.gn (already patched)")
+        else:
+            anchor = '    "proxy_config_monitor.cc",\n'
+            if anchor not in text:
+                raise PatchError("chrome/browser/net/BUILD.gn: proxy_config_monitor.cc not found")
+            text = text.replace(anchor, anchor + '    "rvpn_proxy_config_service.cc",\n', 1)
+            if not p.check_only:
+                build_gn.write_text(text, encoding="utf-8")
+            p.changed.append("chrome/browser/net/BUILD.gn")
+            p.log("BUILD.gn: added rvpn_proxy_config_service.cc")
+
+        factory = "chrome/browser/net/proxy_service_factory.cc"
+        if "RvpnProxyConfigService" in p.path(factory).read_text(encoding="utf-8"):
+            p.skipped.append(f"{factory} (already patched)")
+        else:
+            include_anchor = '#include "chrome/browser/net/proxy_service_factory.h"\n'
+            p.replace(factory, include_anchor,
+                      include_anchor + '#include "chrome/browser/net/rvpn_proxy_config_service.h"\n')
+            anchor = ("  base_service = net::ProxyConfigService::CreateSystemProxyConfigService(\n"
+                      "      base::SingleThreadTaskRunner::GetCurrentDefault());\n")
+            wrap = anchor + (
+                "\n#if BUILDFLAG(IS_ANDROID)\n"
+                "  // RVPN Browser: let the built-in RVPN engine override the system\n"
+                "  // proxy while the user has RVPN mode enabled.\n"
+                "  base_service =\n"
+                "      std::make_unique<RvpnProxyConfigService>(std::move(base_service));\n"
+                "#endif  // BUILDFLAG(IS_ANDROID)\n")
+            p.replace(factory, anchor, wrap)
+
+    # --- Java: RVPN UI, service and proxy bridge ---------------------------
     java_src = integration / "java"
-    java_dest = "chrome/android/java/src/org/chromium/chrome/browser/rvpn"
     if java_src.exists():
-        p.copy_tree(java_src, java_dest)
-    res_src = integration / "res"
-    if res_src.exists():
-        for item in sorted(res_src.iterdir()):
-            p.copy_tree(item, f"chrome/android/java/res/{item.name}")
-    print("    note: the C++ proxy hook and AndroidManifest entries are applied by")
-    print("          browser/patches/android-rvpn-proxy.md (documented manual steps)")
+        p.copy_tree(java_src, "chrome/android/java/src/org/chromium/chrome/browser/rvpn")
+
+        gni = p.path("chrome/android/java_sources.gni")
+        text = gni.read_text(encoding="utf-8")
+        if "rvpn/RvpnActivity.java" in text:
+            p.skipped.append("chrome/android/java_sources.gni (already patched)")
+        else:
+            entries = []
+            for f in sorted(java_src.rglob("*.java")):
+                rel = f.relative_to(java_src).as_posix()
+                entries.append(f'  "java/src/org/chromium/chrome/browser/rvpn/{rel}",\n')
+            marker = "chrome_java_sources = [\n"
+            if marker not in text:
+                raise PatchError("java_sources.gni: chrome_java_sources list not found")
+            text = text.replace(
+                marker,
+                marker + "\n  # RVPN Browser\n" + "".join(entries) + "\n", 1)
+            if not p.check_only:
+                gni.write_text(text, encoding="utf-8")
+            p.changed.append("chrome/android/java_sources.gni")
+            p.log(f"java_sources.gni: added {len(entries)} RVPN source(s)")
+
+    # --- AndroidManifest: activity, service, permissions -------------------
+    manifest_rel = "chrome/android/java/AndroidManifest.xml"
+    manifest = p.path(manifest_rel)
+    text = manifest.read_text(encoding="utf-8")
+    if "RvpnActivity" in text:
+        p.skipped.append(f"{manifest_rel} (already patched)")
+    else:
+        if "</application>" not in text:
+            raise PatchError(f"{manifest_rel}: <application> block not found")
+        additions = (
+            "        <!-- RVPN Browser -->\n"
+            "        <activity\n"
+            '            android:name="org.chromium.chrome.browser.rvpn.RvpnActivity"\n'
+            '            android:exported="true"\n'
+            '            android:launchMode="singleTop"\n'
+            '            android:label="@string/rvpn_app_name"\n'
+            '            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|layoutDirection|smallestScreenSize|screenLayout|density|uiMode">\n'
+            "        </activity>\n"
+            "        <service\n"
+            '            android:name="org.chromium.chrome.browser.rvpn.RvpnService"\n'
+            '            android:exported="false"\n'
+            '            android:foregroundServiceType="dataSync"\n'
+            '            android:process=":rvpn" />\n'
+            "</application>")
+        text = text.replace("</application>", additions, 1)
+        if "FOREGROUND_SERVICE_DATA_SYNC" not in text:
+            text = text.replace(
+                "<application",
+                '    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />\n'
+                '    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />\n'
+                '    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n\n'
+                "    <application", 1)
+        if not p.check_only:
+            manifest.write_text(text, encoding="utf-8")
+        p.changed.append(manifest_rel)
+        p.log("AndroidManifest.xml: RVPN activity/service registered")
+
+    # --- resource string used by the manifest -------------------------------
+    strings = p.src / "chrome/android/java/res_chromium_base/values/channel_constants.xml"
+    if strings.exists() and "rvpn_app_name" not in strings.read_text(encoding="utf-8"):
+        text = strings.read_text(encoding="utf-8")
+        text = text.replace("</resources>",
+                            f'    <string name="rvpn_app_name" translatable="false">{PRODUCT_NAME}</string>\n'
+                            "</resources>", 1)
+        if not p.check_only:
+            strings.write_text(text, encoding="utf-8")
+        p.changed.append("chrome/android/java/res_chromium_base/values/channel_constants.xml")
+        p.log("channel_constants.xml: added rvpn_app_name")
 
 
 def main() -> int:
