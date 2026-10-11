@@ -104,6 +104,35 @@ manifest `key` 推导出的扩展 ID 与原生消息宿主 `allowed_origins` 完
 browser/scripts/test-extension.sh --chromium /path/to/chrome
 ```
 
+实测结果（Chromium 143 / Linux，X11）：
+
+```
+[PASS] extension service worker starts  -- lhgepbmchpealfajciakglacaedkjenh
+[PASS] extension page loads  -- chrome-extension://lhgepbmchpealfajciakglacaedkjenh/options.html
+[PASS] extension reaches the native host (hello)
+[PASS] setMode(rvpn) is accepted
+[PASS] session reaches the connected state  -- socks=127.0.0.1:42621 clientIP=10.10.0.99
+[PASS] chrome.proxy points at the core SOCKS5 port  -- {"host":"127.0.0.1","port":42621,"scheme":"socks5"}
+[PASS] browser traffic is proxied through the SOCKS5 listener  -- body=ok log=8 entr(y|ies)
+[PASS] switching back to normal mode clears the proxy  -- mode=system
+8/8 checks passed
+```
+
+第 7 项是**关键证据**：测试页访问一个无法解析的域名 `http://rvpn-integration-test.invalid/`，
+浏览器只可能通过代理拿到页面内容（模拟宿主记录了 8 次 SOCKS5 CONNECT，页面内容为 `RVPN-MOCK-OK`），
+因此可以证明 RVPN 模式下浏览器流量确实走了本地代理。
+
+### 5.1 扩展逻辑单元测试（无需浏览器）
+
+```bash
+node browser/test/harness/test-background.js   # 124/124 通过（chrome.* 模拟 + 协议级假核心）
+node browser/test/harness/test-pages.js        #  74/74 通过（DOM 桩上运行 popup.js / options.js）
+```
+
+覆盖：ZJU / 非 ZJU 的 start 配置、`chrome.proxy` 精确设置与清除、模式持久化与恢复、
+宿主缺失时的降级与原因上报、断言失败的重连退避（1 s→30 s）、超时、日志上限、
+点选验证码坐标换算、六种挑战处理、设置清洗等。
+
 ## 6. 需要真实账号的手工验收清单
 
 | # | 步骤 | 预期 |

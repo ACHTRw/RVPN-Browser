@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 /** Notification channels, ids and builders shared by both processes. */
 public final class Notifications {
@@ -57,11 +56,6 @@ public final class Notifications {
         download.setDescription(context.getString(R.string.notif_channel_download_desc));
         download.setShowBadge(false);
         nm.createNotificationChannel(download);
-    }
-
-    /** True when notifications may be posted (API 33+ requires the runtime grant). */
-    public static boolean canPost(Context context) {
-        return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
 
     public static int challengeId(String challengeId) {

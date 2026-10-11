@@ -8,7 +8,6 @@
 
     <!-- ==================== app identity ==================== -->
     <string name="app_name">RVPN Browser</string>
-    <string name="app_tagline">内置浙江大学 RVPN 的浏览器</string>
 
     <!-- ==================== address bar / toolbar ==================== -->
     <string name="url_hint">搜索或输入网址</string>
@@ -23,14 +22,10 @@
     <string name="action_close">关闭</string>
     <string name="action_close_tab">关闭标签页</string>
     <string name="action_cancel">取消</string>
-    <string name="action_ok">确定</string>
     <string name="action_continue">继续访问</string>
-    <string name="action_save">保存</string>
     <string name="action_delete">删除</string>
     <string name="action_clear">清空</string>
     <string name="action_open">打开</string>
-    <string name="action_retry">重试</string>
-    <string name="action_copy">复制</string>
     <string name="action_share">分享链接</string>
     <string name="action_copy_link">复制链接</string>
     <string name="action_bookmarks">书签</string>
@@ -41,6 +36,7 @@
     <string name="action_add_bookmark">添加书签</string>
     <string name="action_remove_bookmark">移除书签</string>
     <string name="action_find_in_page">页内查找</string>
+    <string name="find_next">下一个</string>
     <string name="tab_title_new">新标签页</string>
     <string name="tab_list_empty">没有打开的标签页</string>
     <string name="tab_discarded">已关闭最旧的标签页以腾出内存</string>
@@ -79,8 +75,6 @@
     <string name="mode_rvpn">RVPN 模式</string>
     <string name="mode_switch_to_normal">切换到普通模式</string>
     <string name="mode_switch_to_rvpn">切换到 RVPN 模式</string>
-    <string name="mode_normal_hint">普通模式：浏览器直连网络，不使用任何代理。</string>
-    <string name="mode_rvpn_hint">RVPN 模式：登录后所有标签页都通过本机核心的代理访问网络。</string>
     <string name="mode_applying">正在应用 RVPN 代理…</string>
     <string name="mode_rvpn_applied">RVPN 模式已生效，代理 %1$s</string>
     <string name="mode_fallback">无法建立 RVPN 连接，已回到普通模式：%1$s</string>
@@ -92,7 +86,6 @@
     <string name="proxy_clear_failed">清除浏览器代理失败：%1$s</string>
     <string name="proxy_socks_fallback">WebView 拒绝了 SOCKS5 规则，已自动回退到 HTTP 代理 %1$s</string>
     <string name="proxy_none">未使用代理</string>
-    <string name="proxy_applied">浏览器代理已指向 %1$s</string>
 
     <!-- ==================== engine / core ==================== -->
     <string name="engine_unavailable_title">RVPN 引擎不可用</string>
@@ -103,17 +96,11 @@
     <string name="engine_stopping">正在停止 RVPN 引擎…</string>
     <string name="engine_stopped">RVPN 引擎已停止</string>
     <string name="engine_start_forbidden">系统限制后台启动前台服务，请打开应用以恢复 RVPN 模式。</string>
-    <string name="core_not_connected">未连接到核心</string>
-    <string name="core_ok">核心已连接</string>
     <string name="core_unavailable">核心不可用</string>
-    <string name="core_reconnecting">正在重连核心（第 %1$d 次）…</string>
-    <string name="core_reconnected">核心已重新连接</string>
     <string name="core_disconnected">与核心的连接已断开：%1$s</string>
-    <string name="err_answer_rejected">验证请求被拒绝：%1$s</string>
     <string name="err_timeout">操作超时（%1$s）</string>
     <string name="err_disconnected">与核心的连接已断开</string>
     <string name="err_core_error">核心返回错误：%1$s</string>
-    <string name="err_unknown_command">核心不认识该命令：%1$s</string>
 
     <!-- ==================== notifications ==================== -->
     <string name="notif_channel_status">RVPN 状态</string>
@@ -133,7 +120,6 @@
     <string name="notif_download_done">下载完成：%1$s</string>
     <string name="notif_download_failed">下载失败：%1$s</string>
     <string name="notif_boot_title">RVPN 服务未自动恢复</string>
-    <string name="notif_boot_body">系统限制后台启动，点击打开浏览器即可恢复。</string>
     <string name="permission_notifications_denied">未授予通知权限：后台连接状态与验证请求将无法提示。</string>
 
     <!-- ==================== settings: mode ==================== -->
@@ -219,7 +205,6 @@
     <string name="label_server_addr">服务器</string>
     <string name="label_core_error">最近错误</string>
     <string name="label_proxy_state">浏览器代理</string>
-    <string name="value_connected">已连接</string>
     <string name="value_disconnected">未连接</string>
     <string name="value_none">无</string>
     <string name="value_unknown">未知</string>
@@ -247,9 +232,7 @@
     <string name="log_proxy_failed">设置浏览器代理失败：%1$s</string>
     <string name="log_settings_saved">设置已保存</string>
     <string name="log_settings_restart">设置已改变，正在重新连接核心</string>
-    <string name="log_starting">正在启动 RVPN…</string>
     <string name="log_start_failed">启动失败：%1$s</string>
-    <string name="log_stopped">RVPN 已停止</string>
     <string name="log_stop_failed">停止失败：%1$s</string>
     <string name="log_installed">RVPN 引擎已就绪</string>
 
@@ -260,7 +243,6 @@
     <string name="btn_disconnect">断开</string>
     <string name="btn_reset">恢复默认</string>
     <string name="saved_ok">已保存</string>
-    <string name="saving">正在保存…</string>
     <string name="save_failed">保存失败：%1$s</string>
     <string name="reset_done">已恢复默认设置</string>
     <string name="err_username_required">请填写账号和密码</string>
@@ -296,7 +278,6 @@
     <string name="challenge_empty_input">请先输入验证码</string>
     <string name="challenge_answer_sent">已提交验证信息</string>
     <string name="challenge_answer_failed">提交失败：%1$s</string>
-    <string name="challenge_submitted_wait">已提交，等待服务器响应…</string>
     <string name="challenge_open_login">打开登录页面</string>
     <string name="challenge_no_login_url">核心没有提供登录 URL</string>
     <string name="challenge_callback_hint">粘贴回调 URL</string>
@@ -318,6 +299,5 @@
     <string name="download_untitled">未命名文件</string>
 
     <!-- ==================== home page (JS bridge) ==================== -->
-    <string name="home_title">RVPN Browser 起始页</string>
 
 </resources>

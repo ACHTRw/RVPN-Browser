@@ -12,7 +12,7 @@ import android.util.Log;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
-import com.rvpnbrowser.core.rvpncore.Rvpncore;
+import org.rvpnbrowser.core.rvpncore.Rvpncore;
 
 import org.json.JSONObject;
 

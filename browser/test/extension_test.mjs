@@ -76,14 +76,23 @@ function writeHostManifest(userDataDir) {
   return wrapper;
 }
 
-async function sendToExtension(worker, message) {
-  return worker.evaluate((msg) => new Promise((resolve) => {
-    chrome.runtime.sendMessage(msg, (response) => resolve(response));
+// Messages must be sent from a *different* extension frame than the service
+// worker: chrome.runtime.sendMessage does not fire onMessage in the sender's
+// own frame, so the test drives the extension from its options page.
+async function sendToExtension(ui, message) {
+  return ui.evaluate((msg) => new Promise((resolve) => {
+    chrome.runtime.sendMessage(msg, (response) => {
+      if (chrome.runtime.lastError) {
+        resolve({ ok: false, error: String(chrome.runtime.lastError.message) });
+        return;
+      }
+      resolve(response);
+    });
   }), message);
 }
 
-async function getProxySettings(worker) {
-  return worker.evaluate(() => new Promise((resolve) => {
+async function getProxySettings(ui) {
+  return ui.evaluate(() => new Promise((resolve) => {
     chrome.proxy.settings.get({ incognito: false }, (details) => resolve(details));
   }));
 }
@@ -130,16 +139,21 @@ async function main() {
       return 1;
     }
 
+    const ui = await context.newPage();
+    await ui.goto(`chrome-extension://${EXTENSION_ID}/options.html`, { waitUntil: 'domcontentloaded' });
+    await poll(async () => ui.evaluate(() => typeof chrome !== 'undefined' && !!chrome.runtime), 10000, 200);
+    check('extension page loads', ui.url().includes(EXTENSION_ID), ui.url());
+
     // 2. native messaging handshake
     const hello = await poll(async () => {
-      const res = await sendToExtension(worker, { type: 'hello' });
+      const res = await sendToExtension(ui, { type: 'hello' });
       return res && res.ok ? res : null;
     }, 20000, 500);
     check('extension reaches the native host (hello)', !!hello,
       hello ? JSON.stringify(hello.data || {}).slice(0, 90) : 'no reply');
 
     // 3. switch to RVPN mode
-    await sendToExtension(worker, {
+    await sendToExtension(ui, {
       type: 'saveSettings',
       settings: {
         userType: 'zju',
@@ -153,14 +167,20 @@ async function main() {
         rememberPassword: true,
       },
     });
-    const setMode = await sendToExtension(worker, { type: 'setMode', mode: 'rvpn' });
+    const setMode = await sendToExtension(ui, { type: 'setMode', mode: 'rvpn' });
     check('setMode(rvpn) is accepted', !!setMode && setMode.ok !== false,
       setMode ? JSON.stringify(setMode).slice(0, 120) : 'no reply');
 
+    const diag = await sendToExtension(ui, { type: 'diagnostics' });
+    if (diag && !diag.ok) {
+      console.log('    (diagnostics: ' + JSON.stringify(diag).slice(0, 200) + ')');
+    }
+
     const state = await poll(async () => {
-      const res = await sendToExtension(worker, { type: 'getState' });
-      const phase = res && res.data && res.data.state && res.data.state.phase;
-      return phase === 'connected' ? res.data.state : null;
+      const res = await sendToExtension(ui, { type: 'getState' });
+      // getState replies with { ok, mode, state, hello } at the top level.
+      const state = res && res.state;
+      return state && state.phase === 'connected' ? state : null;
     }, 30000, 500);
     check('session reaches the connected state', !!state,
       state ? `socks=${state.socksAddr} clientIP=${state.clientIP}` : 'never connected');
@@ -169,7 +189,7 @@ async function main() {
 
     // 4. chrome.proxy must point at the reported SOCKS port
     const proxy = await poll(async () => {
-      const details = await getProxySettings(worker);
+      const details = await getProxySettings(ui);
       const value = details && details.value;
       const rule = value && value.rules && value.rules.singleProxy;
       return rule && rule.port === socksPort ? value : null;
@@ -193,9 +213,9 @@ async function main() {
     await page.close();
 
     // 6. back to normal mode clears the proxy
-    await sendToExtension(worker, { type: 'setMode', mode: 'normal' });
+    await sendToExtension(ui, { type: 'setMode', mode: 'normal' });
     const cleared = await poll(async () => {
-      const details = await getProxySettings(worker);
+      const details = await getProxySettings(ui);
       const value = details && details.value;
       const rule = value && value.rules && value.rules.singleProxy;
       return (!rule || !rule.port) ? value : null;

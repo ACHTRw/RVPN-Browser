@@ -19,9 +19,14 @@ import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -134,7 +139,12 @@ public final class RvpnClient {
             new ConcurrentHashMap<>();
     private final Object writeLock = new Object();
     private final Object stateLock = new Object();
-    private final LinkedHashSet<String> deliveredChallenges = new LinkedHashSet<>();
+    /** Challenges the core is still waiting for, keyed by challenge id. */
+    private final ConcurrentHashMap<String, RvpnChallenge> activeChallenges =
+            new ConcurrentHashMap<>();
+    /** Per listener record of the challenges it was already shown. */
+    private final ConcurrentHashMap<Listener, Set<String>> deliveredChallenges =
+            new ConcurrentHashMap<>();
     private final ExecutorService callExecutor = Executors.newFixedThreadPool(2);
 
     private volatile boolean running;
@@ -233,23 +243,59 @@ public final class RvpnClient {
         return lastState;
     }
 
+    /**
+     * Registers a listener and immediately brings it up to date: the current
+     * state, the core description and - most importantly - every challenge the
+     * core is still waiting for. That is what makes a challenge answerable after
+     * the UI was closed when it arrived (the notification brings the user back).
+     */
     public void addListener(Listener listener) {
-        if (listener != null) {
-            listeners.addIfAbsent(listener);
+        if (listener == null || !listeners.addIfAbsent(listener)) {
+            return;
         }
+        for (RvpnChallenge challenge : activeChallenges.values()) {
+            if (markDelivered(listener, challenge.id)) {
+                main.post(() -> listener.onCoreChallenge(challenge));
+            }
+        }
+        RvpnState state = lastState;
+        if (state != null) {
+            main.post(() -> listener.onCoreState(state));
+        }
+        JSONObject description = hello;
+        if (description != null) {
+            main.post(listener::onCoreHello);
+        }
+        boolean isConnected = connected;
+        String error = isConnected ? "" : lastError;
+        main.post(() -> listener.onCoreConnection(isConnected, error));
     }
 
     public void removeListener(Listener listener) {
         listeners.remove(listener);
+        deliveredChallenges.remove(listener);
+    }
+
+    /** Records that a listener has seen a challenge; false when it already had. */
+    private boolean markDelivered(Listener listener, String challengeId) {
+        Set<String> seen = deliveredChallenges.computeIfAbsent(listener,
+                key -> Collections.synchronizedSet(Collections.newSetFromMap(new LinkedHashMap<>())));
+        synchronized (seen) {
+            if (!seen.add(challengeId)) {
+                return false;
+            }
+            Iterator<String> iterator = seen.iterator();
+            while (seen.size() > MAX_DELIVERED_CHALLENGES && iterator.hasNext()) {
+                iterator.next();
+                iterator.remove();
+            }
+            return true;
+        }
     }
 
     /** 500 ms polling while a UI is visible, 2 s otherwise. */
     public void setForeground(boolean foreground) {
         pollIntervalMs = foreground ? POLL_VISIBLE_MS : POLL_HIDDEN_MS;
-    }
-
-    public long pollIntervalMs() {
-        return pollIntervalMs;
     }
 
     // --------------------------------------------------------------- requests
@@ -381,7 +427,7 @@ public final class RvpnClient {
                 JSONObject data = request("status", statusParams(), 8_000L);
                 repollImmediately = applyStatus(data);
             } catch (CoreException e) {
-                if (connected && !isTransient(e)) {
+                if (connected && !isConnectionFailure(e)) {
                     // The core answered with an error; keep polling.
                     Log.w(TAG, "status failed: " + e.getMessage());
                     sleepQuietly(pollIntervalMs);
@@ -398,9 +444,10 @@ public final class RvpnClient {
         dropConnection("poll loop stopped", false);
     }
 
-    private boolean isTransient(CoreException e) {
-        return !"NOT_CONNECTED".equals(e.code) && !"DISCONNECTED".equals(e.code)
-                && !"TIMEOUT".equals(e.code) && !"INTERRUPTED".equals(e.code);
+    /** True when the error means "the socket is gone" rather than "the core said no". */
+    private boolean isConnectionFailure(CoreException e) {
+        return "NOT_CONNECTED".equals(e.code) || "DISCONNECTED".equals(e.code)
+                || "TIMEOUT".equals(e.code) || "INTERRUPTED".equals(e.code);
     }
 
     private JSONObject statusParams() {
@@ -464,7 +511,6 @@ public final class RvpnClient {
                 reader = r;
                 writer = w;
             }
-            sessionToken = control.token;
             startReaderThread(r);
             attempt = 0;
             engineAvailable = true;
@@ -565,10 +611,18 @@ public final class RvpnClient {
         // net so a challenge is never lost when the UI was closed.
         JSONArray pendingChallenges = Json.arr(data, "pending");
         if (pendingChallenges != null) {
+            Set<String> live = new HashSet<>();
             for (int i = 0; i < pendingChallenges.length(); i++) {
                 RvpnChallenge challenge = RvpnChallenge.from(pendingChallenges.optJSONObject(i));
                 if (challenge != null) {
+                    live.add(challenge.id);
                     dispatchChallenge(challenge);
+                }
+            }
+            // The core is authoritative: drop challenges it no longer waits for.
+            for (String id : new ArrayList<>(activeChallenges.keySet())) {
+                if (!live.contains(id)) {
+                    forgetChallenge(id);
                 }
             }
         }
@@ -592,27 +646,24 @@ public final class RvpnClient {
     }
 
     private void dispatchChallenge(RvpnChallenge challenge) {
-        synchronized (deliveredChallenges) {
-            if (!deliveredChallenges.add(challenge.id)) {
-                return;
+        activeChallenges.put(challenge.id, challenge);
+        for (Listener listener : listeners) {
+            if (markDelivered(listener, challenge.id)) {
+                main.post(() -> listener.onCoreChallenge(challenge));
             }
-            while (deliveredChallenges.size() > MAX_DELIVERED_CHALLENGES) {
-                Iterator<String> it = deliveredChallenges.iterator();
-                it.next();
-                it.remove();
-            }
-        }
-        for (Listener l : listeners) {
-            main.post(() -> l.onCoreChallenge(challenge));
         }
     }
 
+    /** Forgets a challenge that was answered, skipped or timed out. */
     private void forgetChallenge(String id) {
-        if (id == null) {
+        if (id == null || id.isEmpty()) {
             return;
         }
-        synchronized (deliveredChallenges) {
-            deliveredChallenges.remove(id);
+        activeChallenges.remove(id);
+        for (Set<String> seen : deliveredChallenges.values()) {
+            synchronized (seen) {
+                seen.remove(id);
+            }
         }
     }
 

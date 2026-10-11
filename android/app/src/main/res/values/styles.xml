@@ -24,8 +24,9 @@
 
     <!-- ==================== widgets ==================== -->
     <!-- Empty base style so that every "Widget.RvpnBrowser.*" style below has a
-         resolvable implicit parent. -->
-    <style name="Widget.RvpnBrowser" />
+         resolvable implicit parent. The explicit empty parent stops aapt2 from
+         looking for a style called "Widget". -->
+    <style name="Widget.RvpnBrowser" parent="" />
 
     <style name="Widget.RvpnBrowser.ToolButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">@dimen/tool_button_size</item>

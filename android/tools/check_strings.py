@@ -87,7 +87,8 @@ def main():
                     refs.add(m.group(1))
 
     # --- 3. R.string.... references in java/ -------------------------------
-    java_ref_re = re.compile(r"R\.string\.([A-Za-z0-9_]+)")
+    # "android.R.string.ok" refers to a framework string, not to ours.
+    java_ref_re = re.compile(r"(?<!android\.)\bR\.string\.([A-Za-z0-9_]+)")
     for root_dir, _dirs, files in os.walk(JAVA):
         for f in files:
             if not f.endswith(".java"):

@@ -75,11 +75,6 @@ public final class RvpnState {
         return PHASE_ERROR.equals(phase);
     }
 
-    public boolean isBusy() {
-        return PHASE_CONNECTING.equals(phase) || PHASE_AUTHENTICATING.equals(phase)
-                || PHASE_STOPPING.equals(phase);
-    }
-
     /** Changes whenever anything the UI shows may have changed. */
     public String key() {
         return phase + '\u0000' + message + '\u0000' + since + '\u0000' + protocol + '\u0000'

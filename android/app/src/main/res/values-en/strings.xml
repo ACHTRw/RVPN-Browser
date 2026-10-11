@@ -8,7 +8,6 @@
 
     <!-- ==================== app identity ==================== -->
     <string name="app_name">RVPN Browser</string>
-    <string name="app_tagline">A browser with built-in Zhejiang University RVPN</string>
 
     <!-- ==================== address bar / toolbar ==================== -->
     <string name="url_hint">Search or type a URL</string>
@@ -23,14 +22,10 @@
     <string name="action_close">Close</string>
     <string name="action_close_tab">Close tab</string>
     <string name="action_cancel">Cancel</string>
-    <string name="action_ok">OK</string>
     <string name="action_continue">Continue anyway</string>
-    <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_clear">Clear</string>
     <string name="action_open">Open</string>
-    <string name="action_retry">Retry</string>
-    <string name="action_copy">Copy</string>
     <string name="action_share">Share link</string>
     <string name="action_copy_link">Copy link</string>
     <string name="action_bookmarks">Bookmarks</string>
@@ -41,6 +36,7 @@
     <string name="action_add_bookmark">Add bookmark</string>
     <string name="action_remove_bookmark">Remove bookmark</string>
     <string name="action_find_in_page">Find in page</string>
+    <string name="find_next">Next</string>
     <string name="tab_title_new">New tab</string>
     <string name="tab_list_empty">No open tabs</string>
     <string name="tab_discarded">Closed the oldest tab to free memory</string>
@@ -79,8 +75,6 @@
     <string name="mode_rvpn">RVPN mode</string>
     <string name="mode_switch_to_normal">Switch to normal mode</string>
     <string name="mode_switch_to_rvpn">Switch to RVPN mode</string>
-    <string name="mode_normal_hint">Normal mode: the browser connects directly and uses no proxy.</string>
-    <string name="mode_rvpn_hint">RVPN mode: once logged in, every tab goes through the local core proxy.</string>
     <string name="mode_applying">Applying the RVPN proxy…</string>
     <string name="mode_rvpn_applied">RVPN mode is active, proxy %1$s</string>
     <string name="mode_fallback">RVPN could not be established, back to normal mode: %1$s</string>
@@ -92,7 +86,6 @@
     <string name="proxy_clear_failed">Could not clear the browser proxy: %1$s</string>
     <string name="proxy_socks_fallback">WebView rejected the SOCKS5 rule; fell back to the HTTP proxy %1$s</string>
     <string name="proxy_none">No proxy</string>
-    <string name="proxy_applied">Browser proxy now points at %1$s</string>
 
     <!-- ==================== engine / core ==================== -->
     <string name="engine_unavailable_title">RVPN engine unavailable</string>
@@ -103,17 +96,11 @@
     <string name="engine_stopping">Stopping the RVPN engine…</string>
     <string name="engine_stopped">RVPN engine stopped</string>
     <string name="engine_start_forbidden">The system blocked a background foreground-service start. Open the app to restore RVPN mode.</string>
-    <string name="core_not_connected">Not connected to the core</string>
-    <string name="core_ok">Core connected</string>
     <string name="core_unavailable">Core unavailable</string>
-    <string name="core_reconnecting">Reconnecting to the core (attempt %1$d)…</string>
-    <string name="core_reconnected">Core reconnected</string>
     <string name="core_disconnected">Lost the connection to the core: %1$s</string>
-    <string name="err_answer_rejected">The challenge was rejected: %1$s</string>
     <string name="err_timeout">Operation timed out (%1$s)</string>
     <string name="err_disconnected">The connection to the core was lost</string>
     <string name="err_core_error">The core returned an error: %1$s</string>
-    <string name="err_unknown_command">The core does not know this command: %1$s</string>
 
     <!-- ==================== notifications ==================== -->
     <string name="notif_channel_status">RVPN status</string>
@@ -133,7 +120,6 @@
     <string name="notif_download_done">Download finished: %1$s</string>
     <string name="notif_download_failed">Download failed: %1$s</string>
     <string name="notif_boot_title">RVPN service was not restored</string>
-    <string name="notif_boot_body">The system blocked the background start; tap to open the browser.</string>
     <string name="permission_notifications_denied">Notification permission denied: background state and verification requests cannot be shown.</string>
 
     <!-- ==================== settings: mode ==================== -->
@@ -219,7 +205,6 @@
     <string name="label_server_addr">Server</string>
     <string name="label_core_error">Last error</string>
     <string name="label_proxy_state">Browser proxy</string>
-    <string name="value_connected">Connected</string>
     <string name="value_disconnected">Not connected</string>
     <string name="value_none">none</string>
     <string name="value_unknown">unknown</string>
@@ -247,9 +232,7 @@
     <string name="log_proxy_failed">Could not set the browser proxy: %1$s</string>
     <string name="log_settings_saved">Settings saved</string>
     <string name="log_settings_restart">Settings changed, reconnecting the core</string>
-    <string name="log_starting">Starting RVPN…</string>
     <string name="log_start_failed">Start failed: %1$s</string>
-    <string name="log_stopped">RVPN stopped</string>
     <string name="log_stop_failed">Stop failed: %1$s</string>
     <string name="log_installed">RVPN engine ready</string>
 
@@ -260,7 +243,6 @@
     <string name="btn_disconnect">Disconnect</string>
     <string name="btn_reset">Reset to defaults</string>
     <string name="saved_ok">Saved</string>
-    <string name="saving">Saving…</string>
     <string name="save_failed">Save failed: %1$s</string>
     <string name="reset_done">Defaults restored</string>
     <string name="err_username_required">Please fill in the username and password</string>
@@ -296,7 +278,6 @@
     <string name="challenge_empty_input">Please enter the code first</string>
     <string name="challenge_answer_sent">Answer submitted</string>
     <string name="challenge_answer_failed">Submit failed: %1$s</string>
-    <string name="challenge_submitted_wait">Submitted, waiting for the server…</string>
     <string name="challenge_open_login">Open the login page</string>
     <string name="challenge_no_login_url">The core did not provide a login URL</string>
     <string name="challenge_callback_hint">Paste the callback URL</string>
@@ -318,6 +299,5 @@
     <string name="download_untitled">untitled file</string>
 
     <!-- ==================== home page (JS bridge) ==================== -->
-    <string name="home_title">RVPN Browser start page</string>
 
 </resources>

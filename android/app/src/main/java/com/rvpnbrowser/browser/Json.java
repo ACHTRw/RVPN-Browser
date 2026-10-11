@@ -53,17 +53,6 @@ public final class Json {
         return fallback;
     }
 
-    public static int integer(JSONObject o, String key, int fallback) {
-        long v = lng(o, key, fallback);
-        if (v > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
-        }
-        if (v < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
-        }
-        return (int) v;
-    }
-
     public static boolean bool(JSONObject o, String key, boolean fallback) {
         if (o == null) {
             return fallback;
