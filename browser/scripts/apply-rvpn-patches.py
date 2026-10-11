@@ -330,6 +330,8 @@ def stage_extension(p: Patcher) -> None:
         anchor = "void ComponentLoader::AddDefaultComponentExtensions(\n    bool skip_session_components) {"
         if anchor not in text:
             raise PatchError(f"{loader_rel}: AddDefaultComponentExtensions not found")
+        # The grit id is derived from the file name, so manifest.json becomes
+        # IDR_RVPN_EXTENSION_MANIFEST_JSON (see the grd entries generated above).
         helper = (
             "namespace {\n"
             "// RVPN Browser: the integration UI ships with the browser so that\n"
@@ -337,7 +339,7 @@ def stage_extension(p: Patcher) -> None:
             f'constexpr char kRvpnExtensionDir[] = "{EXTENSION_DIR_NAME}";\n'
             "}  // namespace\n\n"
             "void ComponentLoader::AddRvpnBrowserExtension() {\n"
-            "  Add(IDR_RVPN_EXTENSION_MANIFEST,\n"
+            "  Add(IDR_RVPN_EXTENSION_MANIFEST_JSON,\n"
             "      base::FilePath(FILE_PATH_LITERAL(kRvpnExtensionDir)));\n"
             "}\n\n")
         text = text.replace(anchor, helper + anchor, 1)
