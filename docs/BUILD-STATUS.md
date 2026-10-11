@@ -1,5 +1,9 @@
 # 源码构建状态（Chromium / Thorium）
 
+> **当前状态：编译已暂停（用户关机前的干净中断）**
+> 停止点 `[30822/73906]`（约 42% 的编译边），耗时 4h17m，无编译错误。
+> 恢复方式：重启后在本仓库根目录执行 **`./build.sh`**，会从断点继续。
+
 > 本文件记录**本机**的构建进度，便于中断后续跑。最终交付状态以 README 为准。
 
 ## 环境
@@ -29,10 +33,14 @@
 
 > 说明：V8 / Blink 阶段的单个编译单元很重，4 核机器上每个文件需要数十秒，因此总耗时以**小时**计；ninja/siso 支持断点续跑，中断不会丢失已完成的工作。
 
-## 断点续跑
+## 断点续跑（重启后）
 
 ```bash
-scripts/resume-all.sh --check     # 看当前状态（进度 / 进程 / 产物 / 验证结果）
+./build.sh --check                # 看当前状态（进度 / 依赖 / 产物）
+./build.sh                        # 一键续跑：引擎 → 源码 → 补丁 → 编译 → 验证 → 打包
+./build.sh --publish              # 上面全部 + 上传 GitHub Release（需 GITHUB_TOKEN）
+
+scripts/resume-all.sh --check     # 等价的底层命令
 scripts/resume-all.sh             # 续跑编译 → 验证 → 打包
 scripts/resume-all.sh --publish   # 上面全部 + 上传到 GitHub Release（需要 GITHUB_TOKEN）
 

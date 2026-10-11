@@ -60,7 +60,19 @@ packaging/linux/install.sh            # 默认安装到 ~/.local
 > 未编译 Chromium 时，启动器会自动使用系统已安装的 Thorium / Chromium / Chrome 作为内核，
 > 并自动注册原生消息宿主与扩展，因此 RVPN 功能可立即使用。
 
-## 从源码构建浏览器（Thorium / Chromium）
+## 一键编译
+
+```bash
+./build.sh --check      # 查看当前状态（引擎 / 源码 / 补丁 / 产物 / 进度）
+./build.sh              # 一键完成 Linux 版：引擎 → 源码 → 补丁 → 编译 → 验证 → 打包
+./build.sh --android    # 编译 Android 应用 APK
+./build.sh --all        # 两者都编译
+```
+
+脚本幂等且支持**断点续跑**：Chromium 编译是增量的，中途关机后再次执行会从断点继续，
+不会重头再来。国内网络默认走代理，可用 `RVPN_PROXY=off ./build.sh` 关闭。
+
+## 从源码构建浏览器（Thorium / Chromium，分步执行）
 
 ```bash
 # 一次性准备（拉取 Chromium 源码 + Thorium 补丁，耗时长、占用约 60 GB）
