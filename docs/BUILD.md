@@ -94,6 +94,23 @@ browser/scripts/apply-rvpn-patches.py --chromium-src "$CR_DIR" --thorium-root "$
 4. 内置扩展：把 `browser/extension` 注册为浏览器自带扩展；
 5. Android：注册 RVPN 代理配置服务与 RVPN 设置界面。
 
+### 3.2.1 Android 源码构建的当前范围
+
+`apply-rvpn-patches.py --android` 目前会应用：
+
+- 品牌与图标（应用名、启动图标）；
+- C++ 侧 `RvpnProxyConfigService`：读取 RVPN 界面写入的
+  `<app data>/rvpn/proxy.json`，在 RVPN 模式下覆盖系统代理（Android 没有扩展机制，
+  这是让内核流量走本地代理的接入点）；
+- 对应的 `BUILD.gn` 与 `proxy_service_factory.cc` 接线。
+
+**尚未包含**：Android 上的 RVPN 图形界面（登录、模式切换、验证码）的 Java 源码。
+缺少它时补丁脚本会跳过 manifest/Java 注册，源码树保持可编译（只是 Android 版没有 RVPN 界面）。
+Android 用户当前请使用仓库提供的 APK（`android/`，WebView 内核 + 完整 RVPN 界面），
+或把 `android/app/src/main/java` 中的 RVPN 类改写到
+`android/chromium-integration/java/` 后重新应用补丁（界面需改为代码构建，因为
+Chromium 的 `chrome_java` 目标使用自己的 R 包）。
+
 ### 3.3 生成构建配置并编译
 
 ```bash

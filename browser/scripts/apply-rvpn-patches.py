@@ -446,7 +446,15 @@ def stage_android(p: Patcher) -> None:
             p.replace(factory, anchor, wrap)
 
     # --- Java: RVPN UI, service and proxy bridge ---------------------------
+    # The Java sources are adapted from android/app and only applied when they
+    # are present. Without them the C++ proxy service above is still complete
+    # and the tree stays buildable (RVPN mode simply has no UI in that build),
+    # which is why the manifest/registration changes below are conditional too.
     java_src = integration / "java"
+    if not java_src.exists():
+        print("    note: android/chromium-integration/java is absent - only the")
+        print("          C++ proxy service was patched; no UI/manifest changes")
+        return
     if java_src.exists():
         p.copy_tree(java_src, "chrome/android/java/src/org/chromium/chrome/browser/rvpn")
 
