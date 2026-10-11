@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog body for clickCode: the captcha is shown by ClickCodeView, which
+     records taps in ORIGINAL image pixels and draws the markers itself. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_large"
+        android:paddingTop="@dimen/space_medium"
+        android:paddingRight="@dimen/space_large"
+        android:paddingBottom="@dimen/space_medium">
+
+        <TextView
+            android:id="@+id/challenge_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/space_small"
+            android:text="@string/challenge_click_help"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_small" />
+
+        <com.rvpnbrowser.browser.ClickCodeView
+            android:id="@+id/click_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_medium" />
+
+        <TextView
+            android:id="@+id/click_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/space_small"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_undo"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/challenge_undo" />
+
+            <Button
+                android:id="@+id/btn_clear"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/challenge_clear" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

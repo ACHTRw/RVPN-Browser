@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog body for text / smsCode / totp / radiusCode / secondaryAuth. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_xlarge"
+        android:paddingTop="@dimen/space_medium"
+        android:paddingRight="@dimen/space_xlarge"
+        android:paddingBottom="@dimen/space_medium">
+
+        <TextView
+            android:id="@+id/challenge_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_normal" />
+
+        <ImageView
+            android:id="@+id/challenge_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_medium"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/challenge_type_text"
+            android:maxHeight="140dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/challenge_input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/field_height"
+            android:layout_marginTop="@dimen/space_medium"
+            android:hint="@string/placeholder_code"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_normal" />
+
+        <CheckBox
+            android:id="@+id/challenge_skip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/challenge_skip_secondary"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_normal"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

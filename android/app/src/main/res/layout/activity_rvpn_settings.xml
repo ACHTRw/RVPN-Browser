@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RVPN login / connection settings. Mirrors browser/extension/options.html:
+  mode switch, account, advanced options, core diagnostics and the event log.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_medium">
+
+        <!-- ==================== header ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/space_small">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/options_title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/options_subtitle"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_small" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mode_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/space_medium"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/phase_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/space_medium"
+                android:textColor="@color/brand_primary"
+                android:textSize="@dimen/text_small" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/alert_box"
+            style="@style/Widget.RvpnBrowser.Hint.Warning"
+            android:visibility="gone" />
+
+        <!-- ==================== mode ==================== -->
+        <LinearLayout style="@style/Widget.RvpnBrowser.Card">
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.SectionTitle"
+                android:text="@string/mode_heading" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/mode_normal_btn"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mode_button"
+                    android:text="@string/mode_normal"
+                    android:textColor="@color/text_primary" />
+
+                <Button
+                    android:id="@+id/mode_rvpn_btn"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mode_button"
+                    android:text="@string/mode_rvpn"
+                    android:textColor="@color/text_primary" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mode_hint"
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_mode_persist" />
+
+            <TextView
+                android:id="@+id/status_line"
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- ==================== account ==================== -->
+        <LinearLayout style="@style/Widget.RvpnBrowser.Card">
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.SectionTitle"
+                android:text="@string/section_account" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_user_type" />
+
+            <Spinner
+                android:id="@+id/user_type"
+                style="@style/Widget.RvpnBrowser.Spinner" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_user_type" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_protocol" />
+
+            <Spinner
+                android:id="@+id/protocol"
+                style="@style/Widget.RvpnBrowser.Spinner" />
+
+            <TextView
+                android:id="@+id/hint_protocol"
+                style="@style/Widget.RvpnBrowser.Hint" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_server" />
+
+            <EditText
+                android:id="@+id/server"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:hint="@string/placeholder_server"
+                android:inputType="textUri" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_server" />
+
+            <LinearLayout
+                android:id="@+id/field_port"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Widget.RvpnBrowser.FieldLabel"
+                    android:text="@string/label_port" />
+
+                <EditText
+                    android:id="@+id/port"
+                    style="@style/Widget.RvpnBrowser.Field"
+                    android:hint="@string/placeholder_port_auto"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_username" />
+
+            <EditText
+                android:id="@+id/username"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:hint="@string/placeholder_username"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_password" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:importantForAutofill="no"
+                android:inputType="textPassword" />
+
+            <CheckBox
+                android:id="@+id/save_password"
+                style="@style/Widget.RvpnBrowser.CheckLine"
+                android:text="@string/label_save_password" />
+
+            <TextView
+                android:id="@+id/password_hint"
+                style="@style/Widget.RvpnBrowser.Hint.Warning"
+                android:text="@string/warn_password_plain" />
+
+            <LinearLayout
+                android:id="@+id/field_login_domain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Widget.RvpnBrowser.FieldLabel"
+                    android:text="@string/label_login_domain" />
+
+                <EditText
+                    android:id="@+id/login_domain"
+                    style="@style/Widget.RvpnBrowser.Field"
+                    android:hint="@string/placeholder_login_domain"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/hint_login_domain"
+                    style="@style/Widget.RvpnBrowser.Hint" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field_auth_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Widget.RvpnBrowser.FieldLabel"
+                    android:text="@string/label_auth_type" />
+
+                <Spinner
+                    android:id="@+id/auth_type"
+                    style="@style/Widget.RvpnBrowser.Spinner" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_small">
+
+                <Button
+                    android:id="@+id/btn_probe"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_probe_auth" />
+
+                <TextView
+                    android:id="@+id/probe_status"
+                    style="@style/Widget.RvpnBrowser.Hint"
+                    android:paddingLeft="@dimen/space_medium" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_probe" />
+
+            <LinearLayout
+                android:id="@+id/probe_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_other_auto" />
+
+            <LinearLayout
+                android:id="@+id/field_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Widget.RvpnBrowser.FieldLabel"
+                    android:text="@string/label_phone" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    style="@style/Widget.RvpnBrowser.Field"
+                    android:hint="@string/placeholder_phone"
+                    android:importantForAutofill="no"
+                    android:inputType="phone" />
+
+                <TextView
+                    android:id="@+id/hint_phone"
+                    style="@style/Widget.RvpnBrowser.Hint" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== advanced ==================== -->
+        <LinearLayout style="@style/Widget.RvpnBrowser.Card">
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.SectionTitle"
+                android:text="@string/section_advanced" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_totp" />
+
+            <EditText
+                android:id="@+id/totp"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:hint="@string/placeholder_totp"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_totp" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_socks_port" />
+
+            <EditText
+                android:id="@+id/socks_port"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:hint="@string/placeholder_port_auto"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.FieldLabel"
+                android:text="@string/label_http_port" />
+
+            <EditText
+                android:id="@+id/http_port"
+                style="@style/Widget.RvpnBrowser.Field"
+                android:hint="@string/placeholder_port_auto"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_port_auto" />
+
+            <CheckBox
+                android:id="@+id/debug"
+                style="@style/Widget.RvpnBrowser.CheckLine"
+                android:text="@string/label_debug" />
+
+            <CheckBox
+                android:id="@+id/proxy_all"
+                style="@style/Widget.RvpnBrowser.CheckLine"
+                android:text="@string/label_proxy_all" />
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.Hint"
+                android:text="@string/hint_proxy_all" />
+        </LinearLayout>
+
+        <!-- ==================== core diagnostics ==================== -->
+        <LinearLayout style="@style/Widget.RvpnBrowser.Card">
+
+            <TextView
+                style="@style/Widget.RvpnBrowser.SectionTitle"
+                android:text="@string/section_core" />
+
+            <LinearLayout
+                android:id="@+id/core_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/space_small">
+
+                <Button
+                    android:id="@+id/btn_selftest"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_selftest" />
+
+                <Button
+                    android:id="@+id/btn_refresh_core"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_refresh_core" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_reconnect"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_reconnect" />
+
+                <Button
+                    android:id="@+id/btn_copy_diag"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_copy_diag" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/selftest_result"
+                style="@style/Widget.RvpnBrowser.Hint" />
+        </LinearLayout>
+
+        <!-- ==================== event log ==================== -->
+        <LinearLayout style="@style/Widget.RvpnBrowser.Card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Widget.RvpnBrowser.SectionTitle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/log_heading" />
+
+                <Button
+                    android:id="@+id/btn_clear_log"
+                    style="@style/Widget.RvpnBrowser.Button"
+                    android:text="@string/btn_clear_log" />
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/log_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/log_view_height"
+                android:layout_marginTop="@dimen/space_small"
+                android:background="@drawable/bg_log">
+
+                <TextView
+                    android:id="@+id/log_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/space_medium"
+                    android:textColor="@color/log_text"
+                    android:textSize="11sp"
+                    android:typeface="monospace" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- ==================== actions ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/space_small">
+
+            <Button
+                android:id="@+id/btn_connect"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/btn_connect"
+                android:textColor="@color/brand_primary" />
+
+            <Button
+                android:id="@+id/btn_disconnect"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/btn_disconnect" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/btn_save"
+                android:textColor="@color/brand_primary" />
+
+            <Button
+                android:id="@+id/btn_save_connect"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/btn_save_connect" />
+
+            <Button
+                android:id="@+id/btn_reset"
+                style="@style/Widget.RvpnBrowser.Button"
+                android:text="@string/btn_reset" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/save_result"
+            style="@style/Widget.RvpnBrowser.Hint" />
+
+    </LinearLayout>
+</ScrollView>

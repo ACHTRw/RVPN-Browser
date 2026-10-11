@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dark theme palette: the same names as values/colors.xml, so every layout
+     and drawable keeps working when the system switches to dark mode. -->
+<resources>
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <color name="brand_primary">#4FA8E8</color>
+    <color name="brand_primary_dark">#0B2135</color>
+    <color name="brand_accent">#58D7F6</color>
+
+    <color name="window_background">#12171C</color>
+    <color name="toolbar_background">#1A2027</color>
+    <color name="url_bar_background">#242C34</color>
+    <color name="tab_strip_background">#1A2027</color>
+    <color name="tab_active_background">#12171C</color>
+    <color name="tab_inactive_background">#2A323B</color>
+    <color name="card_background">#1A2027</color>
+    <color name="log_background">#0A0F14</color>
+    <color name="log_text">#BBD8EE</color>
+
+    <color name="text_primary">#E7ECF1</color>
+    <color name="text_secondary">#9AA6B2</color>
+    <color name="text_on_brand">#0B1116</color>
+
+    <color name="divider">#2C343D</color>
+    <color name="icon_tint">#C7D0D9</color>
+    <color name="icon_tint_disabled">#5E6873</color>
+
+    <color name="secure">#5BD37A</color>
+    <color name="insecure">#F2857F</color>
+    <color name="warning_background">#3A2C10</color>
+    <color name="warning_text">#F5C877</color>
+    <color name="error_text">#F2857F</color>
+    <color name="ok_text">#5BD37A</color>
+    <color name="mode_rvpn_active">#5BD37A</color>
+    <color name="mode_normal_active">#9AA6B2</color>
+
+    <color name="status_bar">#0B2135</color>
+    <color name="navigation_bar">#12171C</color>
+</resources>

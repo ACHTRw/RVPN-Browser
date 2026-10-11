@@ -105,7 +105,7 @@
     "message": "密码"
   },
   "label_save_password": {
-    "message": "保存密码"
+    "message": "保存密码（取消勾选 = 不保存密码）"
   },
   "label_login_domain": {
     "message": "登录域"

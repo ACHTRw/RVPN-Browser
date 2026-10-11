@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RVPN Browser - English translation.
+  This file must contain exactly the same key set as values/strings.xml
+  (Simplified Chinese, the default locale); tools/check_strings.py verifies it.
+-->
+<resources>
+
+    <!-- ==================== app identity ==================== -->
+    <string name="app_name">RVPN Browser</string>
+    <string name="app_tagline">A browser with built-in Zhejiang University RVPN</string>
+
+    <!-- ==================== address bar / toolbar ==================== -->
+    <string name="url_hint">Search or type a URL</string>
+    <string name="action_back">Back</string>
+    <string name="action_forward">Forward</string>
+    <string name="action_home">Home</string>
+    <string name="action_reload">Reload</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_new_tab">New tab</string>
+    <string name="action_tabs">Tabs</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_close">Close</string>
+    <string name="action_close_tab">Close tab</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_continue">Continue anyway</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_open">Open</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_share">Share link</string>
+    <string name="action_copy_link">Copy link</string>
+    <string name="action_bookmarks">Bookmarks</string>
+    <string name="action_history">History</string>
+    <string name="action_downloads">Downloads</string>
+    <string name="action_rvpn_settings">RVPN settings</string>
+    <string name="action_switch_mode">Switch mode</string>
+    <string name="action_add_bookmark">Add bookmark</string>
+    <string name="action_remove_bookmark">Remove bookmark</string>
+    <string name="action_find_in_page">Find in page</string>
+    <string name="tab_title_new">New tab</string>
+    <string name="tab_list_empty">No open tabs</string>
+    <string name="tab_discarded">Closed the oldest tab to free memory</string>
+
+    <!-- ==================== security indicator ==================== -->
+    <string name="security_https">Secure connection (HTTPS)</string>
+    <string name="security_http">Not secure: plain HTTP</string>
+    <string name="security_local">Local page</string>
+    <string name="security_unknown">Unknown origin</string>
+
+    <!-- ==================== dialogs / common ==================== -->
+    <string name="dialog_tabs_title">Tabs</string>
+    <string name="dialog_bookmarks_title">Bookmarks</string>
+    <string name="dialog_history_title">History</string>
+    <string name="dialog_downloads_title">Downloads</string>
+    <string name="dialog_ssl_title">Certificate error</string>
+    <string name="dialog_ssl_message">The certificate of this site cannot be verified:\n%1$s\n\nContinuing may expose your account and data. Only continue if you fully trust this network.</string>
+    <string name="dialog_js_message_title">Page message (%1$s)</string>
+    <string name="bookmark_list_empty">No bookmarks yet</string>
+    <string name="history_list_empty">No history yet</string>
+    <string name="download_list_empty">No downloads yet</string>
+    <string name="history_cleared">History cleared</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="link_copied">Link copied</string>
+    <string name="copy_failed">Copy failed: %1$s</string>
+    <string name="no_link_to_copy">This page has no link to copy</string>
+    <string name="page_load_error">Could not open the page: %1$s</string>
+    <string name="page_renderer_gone">The page renderer crashed; the tab was reloaded</string>
+    <string name="share_chooser_title">Share link</string>
+    <string name="share_no_app">No app can handle this link</string>
+    <string name="external_app_missing">No app can open this link</string>
+
+    <!-- ==================== modes ==================== -->
+    <string name="mode_normal">Normal mode</string>
+    <string name="mode_rvpn">RVPN mode</string>
+    <string name="mode_switch_to_normal">Switch to normal mode</string>
+    <string name="mode_switch_to_rvpn">Switch to RVPN mode</string>
+    <string name="mode_normal_hint">Normal mode: the browser connects directly and uses no proxy.</string>
+    <string name="mode_rvpn_hint">RVPN mode: once logged in, every tab goes through the local core proxy.</string>
+    <string name="mode_applying">Applying the RVPN proxy…</string>
+    <string name="mode_rvpn_applied">RVPN mode is active, proxy %1$s</string>
+    <string name="mode_fallback">RVPN could not be established, back to normal mode: %1$s</string>
+    <string name="mode_switch_failed">Could not switch mode: %1$s</string>
+    <string name="mode_restored">Restored the previous mode: %1$s</string>
+    <string name="proxy_unsupported">This WebView does not support per-app proxy settings (PROXY_OVERRIDE), RVPN mode is unavailable.</string>
+    <string name="proxy_apply_failed">Could not set the browser proxy: %1$s</string>
+    <string name="proxy_cleared">Browser proxy cleared</string>
+    <string name="proxy_clear_failed">Could not clear the browser proxy: %1$s</string>
+    <string name="proxy_socks_fallback">WebView rejected the SOCKS5 rule; fell back to the HTTP proxy %1$s</string>
+    <string name="proxy_none">No proxy</string>
+    <string name="proxy_applied">Browser proxy now points at %1$s</string>
+
+    <!-- ==================== engine / core ==================== -->
+    <string name="engine_unavailable_title">RVPN engine unavailable</string>
+    <string name="engine_unavailable_body">The RVPN core process was not found (control.json is missing or unreachable). Browsing still works, but RVPN cannot be used.</string>
+    <string name="engine_error">Engine error: %1$s</string>
+    <string name="engine_starting">Starting the RVPN engine…</string>
+    <string name="engine_started">RVPN engine started</string>
+    <string name="engine_stopping">Stopping the RVPN engine…</string>
+    <string name="engine_stopped">RVPN engine stopped</string>
+    <string name="engine_start_forbidden">The system blocked a background foreground-service start. Open the app to restore RVPN mode.</string>
+    <string name="core_not_connected">Not connected to the core</string>
+    <string name="core_ok">Core connected</string>
+    <string name="core_unavailable">Core unavailable</string>
+    <string name="core_reconnecting">Reconnecting to the core (attempt %1$d)…</string>
+    <string name="core_reconnected">Core reconnected</string>
+    <string name="core_disconnected">Lost the connection to the core: %1$s</string>
+    <string name="err_answer_rejected">The challenge was rejected: %1$s</string>
+    <string name="err_timeout">Operation timed out (%1$s)</string>
+    <string name="err_disconnected">The connection to the core was lost</string>
+    <string name="err_core_error">The core returned an error: %1$s</string>
+    <string name="err_unknown_command">The core does not know this command: %1$s</string>
+
+    <!-- ==================== notifications ==================== -->
+    <string name="notif_channel_status">RVPN status</string>
+    <string name="notif_channel_status_desc">RVPN connection state and shortcuts</string>
+    <string name="notif_channel_challenge">Login verification</string>
+    <string name="notif_channel_challenge_desc">A captcha or second factor is required</string>
+    <string name="notif_channel_download">Downloads</string>
+    <string name="notif_channel_download_desc">File download progress</string>
+    <string name="notif_status_preparing">Starting the RVPN engine…</string>
+    <string name="notif_status_title">RVPN: %1$s</string>
+    <string name="notif_status_idle">Not connected</string>
+    <string name="notif_action_settings">Settings</string>
+    <string name="notif_action_disconnect">Disconnect</string>
+    <string name="notif_challenge_title">Verification required: %1$s</string>
+    <string name="notif_challenge_body">Tap to open the RVPN settings and answer it</string>
+    <string name="notif_download_title">Downloading %1$s</string>
+    <string name="notif_download_done">Download finished: %1$s</string>
+    <string name="notif_download_failed">Download failed: %1$s</string>
+    <string name="notif_boot_title">RVPN service was not restored</string>
+    <string name="notif_boot_body">The system blocked the background start; tap to open the browser.</string>
+    <string name="permission_notifications_denied">Notification permission denied: background state and verification requests cannot be shown.</string>
+
+    <!-- ==================== settings: mode ==================== -->
+    <string name="options_title">RVPN login and connection</string>
+    <string name="options_subtitle">The native rvpn-core program provides the RVPN connection; this app provides the UI and the browser proxy.</string>
+    <string name="mode_heading">Mode</string>
+    <string name="hint_mode_persist">The mode is remembered and restored after a restart; if RVPN cannot be established the app falls back to normal mode and explains why.</string>
+    <string name="hint_mode_normal">Normal mode never touches the browser proxy, use it for everyday browsing.</string>
+    <string name="hint_mode_rvpn">RVPN mode sends every tab through the local core; only matching resources go through RVPN, the rest connects directly.</string>
+
+    <!-- ==================== settings: account ==================== -->
+    <string name="section_account">Account</string>
+    <string name="label_user_type">User type</string>
+    <string name="user_type_zju">Zhejiang University user</string>
+    <string name="user_type_other">Non-ZJU user</string>
+    <string name="hint_user_type">ZJU users get built-in servers and rules; non-ZJU users must fill in the server, port, login domain and authentication method.</string>
+    <string name="label_protocol">Protocol</string>
+    <string name="protocol_atrust">aTrust (L3, recommended)</string>
+    <string name="protocol_easyconnect">EasyConnect (L2, advanced)</string>
+    <string name="hint_protocol_atrust">aTrust is the protocol used by the official client and supports L3 resources and the full set of authentication methods.</string>
+    <string name="hint_protocol_easyconnect">EasyConnect is the older L2 protocol; use it only when aTrust is unavailable.</string>
+    <string name="hint_protocol_atrust_zju">ZJU users use aTrust by default (vpn.zju.edu.cn).</string>
+    <string name="hint_protocol_easyconnect_zju">For ZJU users EasyConnect connects to rvpn.zju.edu.cn.</string>
+    <string name="label_server">Server</string>
+    <string name="placeholder_server">vpn.zju.edu.cn</string>
+    <string name="hint_server">Leave empty to use the built-in address for the selected user type (ZJU: vpn.zju.edu.cn / rvpn.zju.edu.cn).</string>
+    <string name="label_port">Port</string>
+    <string name="label_username">Username</string>
+    <string name="placeholder_username">Student / staff ID</string>
+    <string name="label_password">Password</string>
+    <string name="label_save_password">Remember password</string>
+    <string name="warn_password_plain">With "Remember password" enabled the password is stored in plain text in the private app storage (SharedPreferences) and is only readable by this app. Without it the password is kept in memory for the current run only.</string>
+    <string name="hint_password_not_saved">"Remember password" is off, the password is kept in memory for this run only.</string>
+    <string name="label_login_domain">Login domain</string>
+    <string name="placeholder_login_domain">Radius</string>
+    <string name="hint_login_domain_zju">ZJU users always use the Radius login domain, nothing to change here.</string>
+    <string name="hint_login_domain_other">Non-ZJU users should use "Probe authentication methods" to discover the login domains of the server.</string>
+    <string name="label_auth_type">Authentication</string>
+    <string name="auth_type_auto">Automatic</string>
+    <string name="auth_type_psw">Username and password (auth/psw)</string>
+    <string name="auth_type_cas">CAS single sign-on (auth/cas)</string>
+    <string name="auth_type_sms">SMS code (auth/smsCheckCode)</string>
+    <string name="auth_type_oauth2">HTTPS OAuth2 (auth/httpsOauth2)</string>
+    <string name="btn_probe_auth">Probe authentication methods</string>
+    <string name="hint_probe">Probing calls the authInfo command of the core and lists the login domains and authentication methods the server supports. Tap one to fill it in.</string>
+    <string name="probe_running">Probing…</string>
+    <string name="probe_failed">Probe failed: %1$s</string>
+    <string name="probe_empty">The server returned no usable authentication method</string>
+    <string name="probe_applied">Filled in %1$s</string>
+    <string name="probe_result_hint">Tap an entry to fill in the login domain and authentication method:</string>
+    <string name="label_phone">Phone number</string>
+    <string name="placeholder_phone">8613800138000</string>
+    <string name="hint_phone">Required when the authentication method is "SMS code" (include the country code, for example 8613800138000).</string>
+    <string name="hint_phone_zju">ZJU users normally do not need SMS authentication, leave it empty.</string>
+    <string name="hint_other_auto">For non-ZJU users disableZJUConfig and skipDomainResource are applied automatically (only server-provided resource rules are used).</string>
+
+    <!-- ==================== settings: advanced ==================== -->
+    <string name="section_advanced">Advanced</string>
+    <string name="label_totp">TOTP secret</string>
+    <string name="placeholder_totp">Optional, Base32 secret</string>
+    <string name="hint_totp">Optional; used to complete one-time passwords (second factor) automatically. Leave empty to type them yourself.</string>
+    <string name="label_socks_port">SOCKS port</string>
+    <string name="label_http_port">HTTP port</string>
+    <string name="placeholder_port_auto">auto</string>
+    <string name="hint_port_auto">Empty = pick a free port automatically (the core default is 127.0.0.1:0). The proxies only listen on loopback.</string>
+    <string name="label_debug">Debug log</string>
+    <string name="label_proxy_all">Send all traffic through the VPN</string>
+    <string name="hint_proxy_all">By default only ZJU resources and matching rules go through RVPN, everything else connects directly. Enable this to route all traffic through the VPN (debugging).</string>
+
+    <!-- ==================== settings: core diagnostics ==================== -->
+    <string name="section_core">Core diagnostics</string>
+    <string name="label_core_version">Core version</string>
+    <string name="label_zjuconnect_version">zjuConnect version</string>
+    <string name="label_platform">Platform</string>
+    <string name="label_capabilities">Capabilities</string>
+    <string name="label_phase">State</string>
+    <string name="label_state_message">State message</string>
+    <string name="label_client_ip">Client IP</string>
+    <string name="label_socks">SOCKS5 proxy</string>
+    <string name="label_http">HTTP proxy</string>
+    <string name="label_connected_at">Connected</string>
+    <string name="label_uptime">Uptime</string>
+    <string name="label_server_addr">Server</string>
+    <string name="label_core_error">Last error</string>
+    <string name="label_proxy_state">Browser proxy</string>
+    <string name="value_connected">Connected</string>
+    <string name="value_disconnected">Not connected</string>
+    <string name="value_none">none</string>
+    <string name="value_unknown">unknown</string>
+    <string name="btn_selftest">Connectivity self-test</string>
+    <string name="selftest_running">Running the self-test…</string>
+    <string name="selftest_ok">Server %1$s is reachable, latency %2$d ms</string>
+    <string name="selftest_unreachable">Cannot reach %1$s: %2$s</string>
+    <string name="selftest_failed">Self-test failed: %1$s</string>
+    <string name="btn_refresh_core">Refresh core info</string>
+    <string name="btn_reconnect">Reconnect</string>
+    <string name="reconnect_ok">Reconnected</string>
+    <string name="reconnect_failed">Reconnect failed: %1$s</string>
+    <string name="btn_copy_diag">Copy diagnostics</string>
+    <string name="diag_copied">Diagnostics copied to the clipboard</string>
+    <string name="diag_copy_failed">Copy failed: %1$s</string>
+    <string name="log_heading">Event log</string>
+    <string name="btn_clear_log">Clear log</string>
+    <string name="log_empty">No events yet</string>
+    <string name="log_challenge_received">Verification requested: %1$s</string>
+    <string name="log_core_reconnected">Core connection restored</string>
+    <string name="log_core_disconnected">Core connection lost: %1$s</string>
+    <string name="log_mode_normal">Switched to normal mode</string>
+    <string name="log_mode_rvpn">Switched to RVPN mode</string>
+    <string name="log_proxy_applied">Browser proxy now points at %1$s</string>
+    <string name="log_proxy_failed">Could not set the browser proxy: %1$s</string>
+    <string name="log_settings_saved">Settings saved</string>
+    <string name="log_settings_restart">Settings changed, reconnecting the core</string>
+    <string name="log_starting">Starting RVPN…</string>
+    <string name="log_start_failed">Start failed: %1$s</string>
+    <string name="log_stopped">RVPN stopped</string>
+    <string name="log_stop_failed">Stop failed: %1$s</string>
+    <string name="log_installed">RVPN engine ready</string>
+
+    <!-- ==================== settings: actions / validation ==================== -->
+    <string name="btn_save">Save</string>
+    <string name="btn_save_connect">Save and connect</string>
+    <string name="btn_connect">Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_reset">Reset to defaults</string>
+    <string name="saved_ok">Saved</string>
+    <string name="saving">Saving…</string>
+    <string name="save_failed">Save failed: %1$s</string>
+    <string name="reset_done">Defaults restored</string>
+    <string name="err_username_required">Please fill in the username and password</string>
+    <string name="err_server_required">Non-ZJU users must fill in the VPN server address</string>
+    <string name="err_bad_port">The port must be an integer between 1 and 65535</string>
+    <string name="err_phone_required">SMS authentication requires a phone number (with country code)</string>
+    <string name="phase_idle">Idle</string>
+    <string name="phase_connecting">Connecting</string>
+    <string name="phase_authenticating">Authenticating</string>
+    <string name="phase_connected">Connected</string>
+    <string name="phase_error">Error</string>
+    <string name="phase_stopping">Disconnecting</string>
+
+    <!-- ==================== challenges ==================== -->
+    <string name="challenge_heading">Verification required</string>
+    <string name="challenge_unknown">Unknown challenge</string>
+    <string name="challenge_type_text">Image captcha</string>
+    <string name="challenge_type_clickCode">Click captcha</string>
+    <string name="challenge_type_smsCode">SMS code</string>
+    <string name="challenge_type_totp">One-time password</string>
+    <string name="challenge_type_radiusCode">Radius code</string>
+    <string name="challenge_type_secondaryAuth">Second factor</string>
+    <string name="challenge_type_externalLogin">External login (CAS / OAuth2)</string>
+    <string name="challenge_submit">Submit</string>
+    <string name="challenge_undo">Undo</string>
+    <string name="challenge_clear">Clear</string>
+    <string name="challenge_points">%1$d point(s) selected</string>
+    <string name="challenge_points_required">Tap the image first</string>
+    <string name="challenge_skip_secondary">Skip secondary authentication</string>
+    <string name="challenge_image_failed">Could not load the captcha image</string>
+    <string name="challenge_expired">This challenge has expired</string>
+    <string name="challenge_deadline_in">%1$s left</string>
+    <string name="challenge_empty_input">Please enter the code first</string>
+    <string name="challenge_answer_sent">Answer submitted</string>
+    <string name="challenge_answer_failed">Submit failed: %1$s</string>
+    <string name="challenge_submitted_wait">Submitted, waiting for the server…</string>
+    <string name="challenge_open_login">Open the login page</string>
+    <string name="challenge_no_login_url">The core did not provide a login URL</string>
+    <string name="challenge_callback_hint">Paste the callback URL</string>
+    <string name="challenge_callback_help">Finish the login in the page that opens, then copy the full callback URL from the address bar and paste it here.</string>
+    <string name="challenge_click_help">Tap the requested characters in the image (coordinates are original image pixels, several taps are allowed).</string>
+    <string name="placeholder_code">Enter the code</string>
+    <string name="placeholder_sms_code">Enter the SMS code</string>
+
+    <!-- ==================== downloads ==================== -->
+    <string name="download_starting">Starting download of %1$s</string>
+    <string name="download_progress">Downloaded %1$s</string>
+    <string name="download_complete">Saved: %1$s</string>
+    <string name="download_failed">Download failed: %1$s</string>
+    <string name="download_no_proxy">RVPN is not connected, this download goes directly to the network</string>
+    <string name="download_cancelled">Download cancelled</string>
+    <string name="download_cancel_action">Cancel</string>
+    <string name="download_open_failed">Cannot open this file</string>
+    <string name="download_unknown_size">unknown size</string>
+    <string name="download_untitled">untitled file</string>
+
+    <!-- ==================== home page (JS bridge) ==================== -->
+    <string name="home_title">RVPN Browser start page</string>
+
+</resources>

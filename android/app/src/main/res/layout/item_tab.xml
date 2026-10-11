@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One entry of the horizontal tab strip. The width is clamped in
+     TabManager (measured text width between tab_min_width and tab_max_width). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_tab"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/space_medium"
+    android:paddingRight="@dimen/space_small">
+
+    <TextView
+        android:id="@+id/tab_title"
+        style="@style/Widget.RvpnBrowser.TabTitle" />
+
+    <ImageButton
+        android:id="@+id/tab_close"
+        android:layout_width="@dimen/tab_close_size"
+        android:layout_height="@dimen/tab_close_size"
+        android:layout_marginLeft="@dimen/space_small"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/action_close_tab"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_close"
+        android:tint="@color/icon_tint" />
+
+</LinearLayout>

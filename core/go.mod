@@ -4,7 +4,7 @@ module github.com/ACHTRw/RVPN-Browser/core
 // dependency module are not inherited, so it must be repeated here.
 replace inet.af/netaddr => github.com/inetaf/netaddr v0.0.0-20230525184311-b8eac61e914a
 
-go 1.25.14
+go 1.26.0
 
 require (
 	github.com/mythologyli/zju-connect v1.3.2-0.20261008095431-c19eb4ed34b9
@@ -38,14 +38,17 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb // indirect
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 // indirect
-	golang.org/x/crypto v0.52.0 // indirect
+	golang.org/x/crypto v0.58.0 // indirect
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a // indirect
-	golang.org/x/mod v0.36.0 // indirect
-	golang.org/x/net v0.55.0 // indirect
-	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/mobile v0.0.0-20261011034528-197770444867 // indirect
+	golang.org/x/mod v0.42.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.45.0 // indirect
+	golang.org/x/tools v0.52.0 // indirect
 	gvisor.dev/gvisor v0.0.0-20260129214308-cb856800aa1c // indirect
 	inet.af/netaddr v0.0.0-20230525184311-b8eac61e914a // indirect
 )
+
+tool golang.org/x/mobile/cmd/gobind

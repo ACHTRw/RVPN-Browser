@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light theme palette. The brand colours are taken from the master artwork
+     (icon.svg): cyan #58D7F6 / #7AE7FE, mid blue #3BB3E4, navy #1968B9. -->
+<resources>
+    <!-- launcher icon background (adaptive icon) -->
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <!-- brand -->
+    <color name="brand_primary">#1968B9</color>
+    <color name="brand_primary_dark">#0F3F73</color>
+    <color name="brand_accent">#3BB3E4</color>
+
+    <!-- surfaces -->
+    <color name="window_background">#FFFFFF</color>
+    <color name="toolbar_background">#F4F7FA</color>
+    <color name="url_bar_background">#EDF1F6</color>
+    <color name="tab_strip_background">#E4EAF1</color>
+    <color name="tab_active_background">#FFFFFF</color>
+    <color name="tab_inactive_background">#D3DBE4</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="log_background">#0E1621</color>
+    <color name="log_text">#C9E3F7</color>
+
+    <!-- text -->
+    <color name="text_primary">#11161C</color>
+    <color name="text_secondary">#5B6672</color>
+    <color name="text_on_brand">#FFFFFF</color>
+
+    <!-- lines / icons -->
+    <color name="divider">#D9E0E8</color>
+    <color name="icon_tint">#3C4653</color>
+    <color name="icon_tint_disabled">#A9B2BD</color>
+
+    <!-- state -->
+    <color name="secure">#1E8E3E</color>
+    <color name="insecure">#C5221F</color>
+    <color name="warning_background">#FFF4E0</color>
+    <color name="warning_text">#8A5300</color>
+    <color name="error_text">#B3261E</color>
+    <color name="ok_text">#1E8E3E</color>
+    <color name="mode_rvpn_active">#1E8E3E</color>
+    <color name="mode_normal_active">#5B6672</color>
+
+    <!-- system bars -->
+    <color name="status_bar">#0F3F73</color>
+    <color name="navigation_bar">#FFFFFF</color>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spinner labels; the parallel *_values arrays hold the protocol/config
+         values that are sent to the core. Keeping label and value arrays
+         separate avoids any reflection or switch on localised text. -->
+    <string-array name="user_type_labels">
+        <item>@string/user_type_zju</item>
+        <item>@string/user_type_other</item>
+    </string-array>
+    <string-array name="user_type_values">
+        <item>zju</item>
+        <item>other</item>
+    </string-array>
+
+    <string-array name="protocol_labels">
+        <item>@string/protocol_atrust</item>
+        <item>@string/protocol_easyconnect</item>
+    </string-array>
+    <string-array name="protocol_values">
+        <item>atrust</item>
+        <item>easyconnect</item>
+    </string-array>
+
+    <string-array name="auth_type_labels">
+        <item>@string/auth_type_auto</item>
+        <item>@string/auth_type_psw</item>
+        <item>@string/auth_type_cas</item>
+        <item>@string/auth_type_sms</item>
+        <item>@string/auth_type_oauth2</item>
+    </string-array>
+    <string-array name="auth_type_values">
+        <item></item>
+        <item>auth/psw</item>
+        <item>auth/cas</item>
+        <item>auth/smsCheckCode</item>
+        <item>auth/httpsOauth2</item>
+    </string-array>
+</resources>

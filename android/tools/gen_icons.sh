@@ -81,14 +81,22 @@ for i in "${!DENSITIES[@]}"; do
     render "$n" "$dir/ic_launcher.png"
 
     # Round variant: white filled circle + the artwork centred at ROUND_SCALE %.
+    # NOTE: `-colorspace sRGB` matters - a white-on-transparent canvas is
+    # otherwise inferred as greyscale and the composite would desaturate the
+    # artwork.
     rs=$(( n * ROUND_SCALE / 100 ))
     render "$rs" "$TMP/art_$d.png"
-    "$IM" -size "${n}x${n}" xc:none -fill white \
+    "$IM" -size "${n}x${n}" xc:none -colorspace sRGB -fill white \
           -draw "circle $((n / 2)),$((n / 2)) $((n / 2)),0" "$TMP/bg_$d.png"
-    "$IM" "$TMP/bg_$d.png" "$TMP/art_$d.png" -gravity center -composite "$dir/ic_launcher_round.png"
+    "$IM" "$TMP/bg_$d.png" -colorspace sRGB "$TMP/art_$d.png" \
+          -gravity center -composite "$dir/ic_launcher_round.png"
 
     for f in "$dir/ic_launcher.png" "$dir/ic_launcher_round.png"; do
-        read -r w h < <("$IM" identify -format '%w %h' "$f")
+        # NOTE: `magick identify` prints no trailing newline, so `read` would
+        # see EOF and fail; plain command substitution avoids that trap.
+        dims=$("$IM" identify -format '%w %h' "$f")
+        w=${dims% *}
+        h=${dims#* }
         bytes=$(stat -c '%s' "$f")
         [ "$w" = "$n" ] && [ "$h" = "$n" ] || die "$f is ${w}x${h}, expected ${n}x${n}"
         [ "$bytes" -gt 200 ] || die "$f is suspiciously small ($bytes bytes)"

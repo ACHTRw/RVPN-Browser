@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Paths exposed through androidx.core.content.FileProvider so that finished
+     downloads can be handed to a viewer app on API 24+ (on API 29+ downloads go
+     through MediaStore instead and are opened by content:// URI). -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) -->
+    <external-files-path
+        name="downloads"
+        path="Download/" />
+    <external-files-path
+        name="external_files"
+        path="." />
+    <!-- getFilesDir() -->
+    <files-path
+        name="files"
+        path="." />
+    <cache-path
+        name="cache"
+        path="." />
+</paths>

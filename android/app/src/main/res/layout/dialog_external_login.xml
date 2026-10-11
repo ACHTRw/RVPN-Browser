@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog body for externalLogin (CAS / OAuth2): open the login page in a tab,
+     then paste the callback URL back into the core. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/space_xlarge"
+    android:paddingTop="@dimen/space_medium"
+    android:paddingRight="@dimen/space_xlarge"
+    android:paddingBottom="@dimen/space_medium">
+
+    <TextView
+        android:id="@+id/challenge_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/space_small"
+        android:text="@string/challenge_callback_help"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_small" />
+
+    <Button
+        android:id="@+id/btn_open_login"
+        style="@style/Widget.RvpnBrowser.Button"
+        android:layout_marginTop="@dimen/space_small"
+        android:text="@string/challenge_open_login" />
+
+    <EditText
+        android:id="@+id/callback_input"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/field_height"
+        android:layout_marginTop="@dimen/space_small"
+        android:hint="@string/challenge_callback_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textUri"
+        android:singleLine="true"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_normal" />
+
+</LinearLayout>

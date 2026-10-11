@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Network security policy for RVPN Browser.
+
+  Two deliberate decisions:
+
+  1. The base configuration permits cleartext traffic. That is *not* the same as
+     android:usesCleartextTraffic="true" in the manifest (which is absent), but
+     it is required for a browser: WebView asks NetworkSecurityPolicy whether a
+     given URL may be loaded over plain HTTP, and roughly a third of the sites a
+     ZJU user needs (intranet hosts inside 10.0.0.0/8, the library catalogue,
+     some campus services) are still http://. A browser that refuses to open
+     http:// would be unusable. Setting this to "false" is a one-line change if
+     a stricter policy is ever preferred.
+
+  2. Only the loopback endpoints of the RVPN core trust user installed CAs:
+     everything the core exposes (control socket, SOCKS5 proxy, HTTP proxy)
+     listens on 127.0.0.1, so a locally installed CA can at most inspect traffic
+     that never leaves the device. All other hosts trust the system CAs only.
+-->
+<network-security-config>
+
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+
+</network-security-config>

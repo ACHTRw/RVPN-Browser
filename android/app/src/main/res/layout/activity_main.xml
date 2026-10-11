@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical">
+
+    <!-- ==================== address bar ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/toolbar_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_small"
+        android:paddingRight="@dimen/space_small">
+
+        <ImageView
+            android:id="@+id/url_security"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginRight="@dimen/space_small"
+            android:contentDescription="@string/security_unknown"
+            android:src="@drawable/ic_globe" />
+
+        <EditText
+            android:id="@+id/url_bar"
+            style="@style/Widget.RvpnBrowser.UrlBar"
+            android:hint="@string/url_hint" />
+
+        <ImageButton
+            android:id="@+id/btn_reload"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_reload"
+            android:src="@drawable/ic_reload" />
+    </LinearLayout>
+
+    <!-- ==================== tab strip ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_strip_height"
+        android:background="@color/tab_strip_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:id="@+id/tab_scroll"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/tab_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/mode_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginRight="@dimen/space_tiny"
+            android:background="@drawable/bg_mode_button"
+            android:gravity="center"
+            android:minWidth="52dp"
+            android:paddingLeft="@dimen/space_medium"
+            android:paddingRight="@dimen/space_medium"
+            android:text="@string/mode_normal"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp" />
+
+        <ImageButton
+            android:id="@+id/btn_new_tab"
+            style="@style/Widget.RvpnBrowser.ToolButton.Small"
+            android:contentDescription="@string/action_new_tab"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/brand_accent" />
+
+    <!-- ==================== pages ==================== -->
+    <FrameLayout
+        android:id="@+id/web_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- ==================== bottom bar ==================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/toolbar_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_small"
+        android:paddingRight="@dimen/space_small">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_back"
+            android:src="@drawable/ic_back" />
+
+        <ImageButton
+            android:id="@+id/btn_forward"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_forward"
+            android:src="@drawable/ic_forward" />
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_home"
+            android:src="@drawable/ic_home" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btn_tabs"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_tabs"
+            android:src="@drawable/ic_tabs" />
+
+        <ImageButton
+            android:id="@+id/btn_menu"
+            style="@style/Widget.RvpnBrowser.ToolButton"
+            android:contentDescription="@string/action_menu"
+            android:src="@drawable/ic_more" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,15 @@
+{
+  "name": "rvpn-browser-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Integration tests for RVPN Browser (browser extension + native host)",
+  "type": "module",
+  "scripts": {
+    "test:extension": "node browser/test/extension_test.mjs",
+    "test:core": "cd core && go test ./...",
+    "test:e2e": "python3 core/test/e2e_dummy_login.py"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.55.0"
+  }
+}
