@@ -46,4 +46,17 @@ fi
 
 echo "==> chromium: $CHROMIUM"
 echo "==> playwright-core: $NODE_PATH_GUESS"
-NODE_PATH="$NODE_PATH_GUESS" node "$REPO_ROOT/browser/test/extension_test.mjs" --chromium "$CHROMIUM" "$@"
+
+status=0
+run() {
+  echo
+  echo "==> $1"
+  NODE_PATH="$NODE_PATH_GUESS" node "$REPO_ROOT/browser/test/extension_test.mjs" --chromium "$CHROMIUM" "${@:2}" || status=1
+}
+
+run "mock engine integration (proxy + traffic)" "$@"
+run "challenge round-trip" --challenge "$@"
+
+echo
+if [ "$status" = "0" ]; then echo "==> all extension integration tests passed"; else echo "==> FAILURES (see above)"; fi
+exit "$status"

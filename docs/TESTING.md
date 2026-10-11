@@ -141,9 +141,14 @@ browser/scripts/test-extension.sh --chromium /path/to/chrome
 [PASS] session reaches the connected state  -- socks=127.0.0.1:42621 clientIP=10.10.0.99
 [PASS] chrome.proxy points at the core SOCKS5 port  -- {"host":"127.0.0.1","port":42621,"scheme":"socks5"}
 [PASS] browser traffic is proxied through the SOCKS5 listener  -- body=ok log=8 entr(y|ies)
+[PASS] challenge reaches the UI  -- type=text image=data:image/png;base64,...
+[PASS] answer is delivered to the core  -- {"ok":true,"data":{"accepted":true}}
+[PASS] answered challenge is cleared from the UI
 [PASS] switching back to normal mode clears the proxy  -- mode=system
-8/8 checks passed
+11/11 checks passed          # 含 --challenge 的完整验证码往返
 ```
+
+（不带 `--challenge` 时为 8/8；`browser/scripts/test-extension.sh` 会依次运行两种模式。）
 
 第 7 项是**关键证据**：测试页访问一个无法解析的域名 `http://rvpn-integration-test.invalid/`，
 浏览器只可能通过代理拿到页面内容（模拟宿主记录了 8 次 SOCKS5 CONNECT，页面内容为 `RVPN-MOCK-OK`），

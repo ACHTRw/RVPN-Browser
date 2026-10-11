@@ -35,6 +35,7 @@ const opt = (name, fallback) => {
 };
 const CHROMIUM = opt('chromium', process.env.RVPN_CHROMIUM || '');
 const KEEP = args.includes('--keep');
+const CHALLENGE = args.includes('--challenge');
 
 const results = [];
 function check(name, ok, detail = '') {
@@ -124,7 +125,12 @@ async function main() {
       '--no-sandbox',
       '--disable-dev-shm-usage',
     ],
-    env: { ...process.env, RVPN_MOCK_LOG: mockLog, DISPLAY: process.env.DISPLAY || ':0' },
+    env: {
+      ...process.env,
+      RVPN_MOCK_LOG: mockLog,
+      RVPN_MOCK_CHALLENGE: CHALLENGE ? '1' : '',
+      DISPLAY: process.env.DISPLAY || ':0',
+    },
   });
 
   let worker = null;
@@ -211,6 +217,32 @@ async function main() {
       body.includes('RVPN-MOCK-OK') && logged.includes('rvpn-integration-test.invalid:80'),
       `body=${body.includes('RVPN-MOCK-OK') ? 'ok' : body.slice(0, 60)} log=${logged.split('\n').filter(Boolean).length} entr(y|ies)`);
     await page.close();
+
+    // 5b. interactive challenge round-trip (captcha / SMS / TOTP)
+    if (CHALLENGE) {
+      const pending = await poll(async () => {
+        const res = await sendToExtension(ui, { type: 'getState' });
+        const list = (res && res.challenges) || [];
+        return list.length ? list[0] : null;
+      }, 15000, 300);
+      check('challenge reaches the UI', !!pending,
+        pending ? `type=${pending.type} image=${(pending.imageDataUrl || '').slice(0, 22)}...` : 'no challenge');
+      // The extension wraps answer parameters in `payload` (see handleMessage).
+      const accepted = pending
+        ? await sendToExtension(ui, {
+            type: 'answer',
+            payload: { challengeId: pending.id, code: '1234' },
+          })
+        : null;
+      check('answer is delivered to the core', !!accepted && accepted.ok !== false,
+        accepted ? JSON.stringify(accepted).slice(0, 90) : 'not attempted');
+      const cleared = await poll(async () => {
+        const res = await sendToExtension(ui, { type: 'getState' });
+        const list = (res && res.challenges) || [];
+        return list.length === 0 ? true : null;
+      }, 10000, 300);
+      check('answered challenge is cleared from the UI', !!cleared);
+    }
 
     // 6. back to normal mode clears the proxy
     await sendToExtension(ui, { type: 'setMode', mode: 'normal' });
