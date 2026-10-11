@@ -97,7 +97,7 @@ RVPN 模式下用 `ProxyController` 把**本应用**的所有 WebView 流量指�
 | Linux 安装/启动器 | ✅ 通过 | 发布包实测：解压 → 安装 → 启动器生成正确命令行 |
 | Android APK | ✅ 构建通过 | debug + release（R8/资源压缩）均成功，内含三个 ABI 的 Go 引擎；已签名 |
 | Android 运行 | ⚠️ 待真机验证 | 构建环境无 KVM，无法跑模拟器；运行路径与桌面共用同一核心协议 |
-| Chromium 源码构建 | ⏳ 编译中 | 源码/依赖/工具链就绪，Thorium 181 条补丁 + RVPN 30 处集成补丁已应用；`autoninja` 正在编译（当前 25082/75810 条边），进度见 [docs/BUILD-STATUS.md](docs/BUILD-STATUS.md) |
+| Chromium 源码构建 | ⏳ 编译中 | 源码/依赖/工具链就绪；Thorium 181 条补丁与 RVPN 集成补丁已应用并逐项校验；`autoninja` 正在编译 V8/Blink（4 核机器需数小时）。实时进度与续跑方式见 [docs/BUILD-STATUS.md](docs/BUILD-STATUS.md) |
 
 ## 仓库结构
 
