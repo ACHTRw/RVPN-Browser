@@ -1,0 +1,294 @@
+/* RVPN Browser - popup styles. No web fonts, no remote assets (offline). */
+
+:root {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --text: #1f2328;
+  --muted: #5f6772;
+  --border: #d8dce2;
+  --blue: #1968b9;
+  --blue-dark: #14548f;
+  --cyan: #3bb3e4;
+  --green: #188038;
+  --amber: #b06000;
+  --red: #d93025;
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 400px;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.5 "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", Roboto, Arial, sans-serif;
+}
+
+body { padding-bottom: 10px; }
+body.detached { width: auto; min-width: 380px; max-width: 720px; }
+
+h1, h2 { margin: 0; font-weight: 600; }
+h1 { font-size: 14px; }
+h2 { font-size: 13px; color: var(--text); }
+
+.hidden { display: none !important; }
+
+/* ---------- header ---------- */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #0d2b58, #1968b9);
+  color: #fff;
+}
+
+.app-header .logo { flex: 0 0 auto; }
+.app-header .titles { flex: 1 1 auto; min-width: 0; }
+.app-header h1 { color: #fff; }
+.app-header .subtitle { margin: 2px 0 0; display: flex; gap: 6px; flex-wrap: wrap; }
+
+.icon-btn {
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.icon-btn:hover { background: rgba(255, 255, 255, 0.26); }
+
+.badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  white-space: nowrap;
+}
+.badge-normal { background: #6b7280; }
+.badge-rvpn { background: #0b8043; }
+.badge-phase { background: rgba(255, 255, 255, 0.22); }
+
+/* ---------- cards ---------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 8px 10px;
+  padding: 10px 12px;
+}
+
+.card-head { display: flex; align-items: center; justify-content: space-between; }
+
+.hint { color: var(--muted); font-size: 11.5px; margin: 6px 0 0; }
+.hint.warn { color: var(--amber); }
+.hint.ok { color: var(--green); }
+.hint.error { color: var(--red); }
+
+/* ---------- alerts ---------- */
+
+.alerts { margin: 8px 10px 0; }
+
+.alert {
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border: 1px solid;
+  font-size: 12px;
+}
+.alert strong { display: block; margin-bottom: 2px; }
+.alert-error { background: #fdecea; border-color: #f3b6b0; color: #7a1c14; }
+.alert-warn { background: #fef7e0; border-color: #f2d692; color: #6b4a00; }
+.alert-info { background: #e8f0fe; border-color: #b9cdf5; color: #123c78; }
+.alert .alert-actions { margin-top: 6px; display: flex; gap: 6px; }
+
+/* ---------- buttons ---------- */
+
+button {
+  font: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+button:hover { background: #f0f2f5; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: default; }
+button.primary { background: var(--blue); border-color: var(--blue-dark); color: #fff; }
+button.primary:hover { background: var(--blue-dark); }
+button.danger { background: var(--red); border-color: #a5271d; color: #fff; }
+button.link-btn {
+  border: none;
+  background: none;
+  color: var(--blue);
+  padding: 0;
+  font-size: 12px;
+}
+button.link-btn:hover { text-decoration: underline; background: none; }
+
+.row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+/* ---------- mode switch ---------- */
+
+.mode-switch { display: flex; gap: 8px; }
+
+.mode-btn {
+  flex: 1 1 0;
+  padding: 9px 8px;
+  font-weight: 600;
+  background: #fff;
+}
+
+.mode-btn.active {
+  background: var(--blue);
+  border-color: var(--blue-dark);
+  color: #fff;
+}
+.mode-btn.active.mode-rvpn-active { background: var(--green); border-color: #0b6b34; }
+
+/* ---------- status ---------- */
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 2px 8px;
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+.status-grid dt { color: var(--muted); }
+.status-grid dd { margin: 0; word-break: break-all; }
+.status-grid dd.mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+
+.state-message { margin: 8px 0 0; font-size: 12px; color: var(--muted); word-break: break-word; }
+.state-message.error { color: var(--red); }
+
+.selftest { font-size: 12px; }
+.selftest.ok { color: var(--green); }
+.selftest.error { color: var(--red); }
+
+/* ---------- forms ---------- */
+
+.field { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.field label { flex: 0 0 84px; color: var(--muted); font-size: 12px; }
+.field input, .field select {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--text);
+}
+.field input:focus, .field select:focus { outline: 2px solid rgba(25, 104, 185, 0.35); border-color: var(--blue); }
+
+.checkline { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; }
+.checkline input { margin: 0; }
+
+/* ---------- challenges ---------- */
+
+.challenge-card { border-color: #f2b705; box-shadow: 0 0 0 2px rgba(242, 183, 5, 0.18); }
+.challenge-title { color: #8a5a00; margin-bottom: 6px; }
+
+.challenge {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+.challenge:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+.challenge-type { font-size: 11px; color: #8a5a00; margin: 0 0 2px; }
+.challenge-message { margin: 0 0 6px; font-size: 12.5px; word-break: break-word; }
+.challenge-deadline { font-size: 11px; color: var(--muted); margin: 4px 0 0; }
+.challenge-deadline.expired { color: var(--red); font-weight: 600; }
+.challenge-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+.challenge-row input[type="text"] {
+  flex: 1 1 140px;
+  min-width: 0;
+  font: inherit;
+  padding: 5px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.challenge-image-wrap { position: relative; display: inline-block; max-width: 100%; }
+.challenge-image-wrap canvas {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+}
+.challenge-points { font-size: 11.5px; color: var(--muted); }
+.challenge-image {
+  display: block;
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+}
+.challenge-submitted { font-size: 11.5px; color: var(--green); }
+.challenge a { color: var(--blue); word-break: break-all; }
+
+/* ---------- log ---------- */
+
+.log-view {
+  margin-top: 6px;
+  max-height: 190px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #fbfbfc;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  padding: 4px 6px;
+}
+.log-row { display: flex; gap: 6px; padding: 1px 0; border-bottom: 1px solid #f0f1f3; }
+.log-row:last-child { border-bottom: none; }
+.log-time { color: #8a9099; flex: 0 0 auto; }
+.log-kind { color: #6b7280; flex: 0 0 auto; min-width: 62px; }
+.log-msg { flex: 1 1 auto; white-space: pre-wrap; word-break: break-word; }
+.log-level-warn .log-msg { color: var(--amber); }
+.log-level-error .log-msg { color: var(--red); }
+.log-level-debug .log-msg { color: #8a9099; }
+.log-empty { color: var(--muted); }
+
+/* ---------- dark mode ---------- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1f2126;
+    --card: #2a2d33;
+    --text: #e6e8ea;
+    --muted: #a2a9b4;
+    --border: #3c4149;
+  }
+  button { background: #32363d; color: var(--text); }
+  button:hover { background: #3b4048; }
+  button.primary { background: var(--blue); }
+  .field input, .field select, .challenge-row input[type="text"] { background: #22252a; color: var(--text); }
+  .log-view { background: #22252a; }
+  .log-row { border-bottom-color: #31353c; }
+  .alert-error { background: #3d1f1c; border-color: #7a3b34; color: #ffc9c2; }
+  .alert-warn { background: #3a2f12; border-color: #7a6320; color: #ffe08a; }
+  .alert-info { background: #1b2a44; border-color: #37507d; color: #cfe0ff; }
+  .mode-btn.active { color: #fff; }
+}

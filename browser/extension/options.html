@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="options_title">RVPN 登录与连接设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="page-header">
+    <img class="logo" src="icons/icon48.png" alt="" width="40" height="40">
+    <div>
+      <h1 data-i18n="options_title">RVPN 登录与连接设置</h1>
+      <p class="subtitle" data-i18n="options_subtitle">由 rvpn-core 原生程序提供 RVPN 连接，扩展负责界面与浏览器代理。</p>
+    </div>
+    <div class="header-right">
+      <span id="mode-badge" class="badge badge-normal">-</span>
+      <span id="phase-badge" class="badge">-</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="alerts" class="alerts"></div>
+
+    <section class="card">
+      <h2 data-i18n="mode_heading">模式</h2>
+      <div class="mode-switch">
+        <button id="btn-mode-normal" type="button" class="mode-btn" data-i18n="mode_normal">普通模式</button>
+        <button id="btn-mode-rvpn" type="button" class="mode-btn" data-i18n="mode_rvpn">RVPN 模式</button>
+      </div>
+      <p class="hint" data-i18n="hint_mode_persist">模式会被记住，并在浏览器重启后自动恢复；若 RVPN 无法建立，将自动回到普通模式并说明原因。</p>
+      <p id="status-line" class="hint"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="section_account">账号</h2>
+
+      <div class="field">
+        <label for="user-type" data-i18n="label_user_type">用户类型</label>
+        <select id="user-type">
+          <option value="zju" data-i18n="user_type_zju">浙江大学用户</option>
+          <option value="other" data-i18n="user_type_other">非 ZJU 用户</option>
+        </select>
+      </div>
+      <p class="hint" data-i18n="hint_user_type">浙江大学用户使用内置服务器与规则；非 ZJU 用户需要自行填写服务器、端口、登录域与认证方式。</p>
+
+      <div class="field">
+        <label for="protocol" data-i18n="label_protocol">协议</label>
+        <select id="protocol">
+          <option value="atrust" data-i18n="protocol_atrust">aTrust（L3，推荐）</option>
+          <option value="easyconnect" data-i18n="protocol_easyconnect">EasyConnect（L2，高级选项）</option>
+        </select>
+      </div>
+      <p id="hint-protocol" class="hint"></p>
+
+      <div class="field">
+        <label for="server" data-i18n="label_server">服务器</label>
+        <input id="server" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="placeholder_server">
+      </div>
+      <p class="hint" data-i18n="hint_server">留空时按用户类型自动使用内置地址（ZJU：vpn.zju.edu.cn / rvpn.zju.edu.cn）。</p>
+
+      <div class="field" id="field-port">
+        <label for="port" data-i18n="label_port">端口</label>
+        <input id="port" type="number" min="1" max="65535" step="1">
+      </div>
+
+      <div class="field">
+        <label for="username" data-i18n="label_username">账号</label>
+        <input id="username" type="text" autocomplete="username" spellcheck="false" data-i18n-placeholder="placeholder_username">
+      </div>
+
+      <div class="field">
+        <label for="password" data-i18n="label_password">密码</label>
+        <input id="password" type="password" autocomplete="current-password">
+      </div>
+
+      <label class="checkline">
+        <input id="save-password" type="checkbox">
+        <span data-i18n="label_save_password">保存密码</span>
+      </label>
+      <p class="hint warn" data-i18n="warn_password_plain">密码以明文形式保存在浏览器本地存储（chrome.storage.local）中，仅本机可读；如不勾选“保存密码”，密码只在本次会话内保存在后台内存中。</p>
+
+      <div class="field" id="field-login-domain">
+        <label for="login-domain" data-i18n="label_login_domain">登录域</label>
+        <input id="login-domain" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="placeholder_login_domain">
+      </div>
+      <p id="hint-login-domain" class="hint"></p>
+
+      <div class="field" id="field-auth-type">
+        <label for="auth-type" data-i18n="label_auth_type">认证方式</label>
+        <select id="auth-type">
+          <option value="" data-i18n="auth_type_auto">自动</option>
+          <option value="auth/psw" data-i18n="auth_type_psw">账号密码 (auth/psw)</option>
+          <option value="auth/cas" data-i18n="auth_type_cas">CAS 统一身份认证 (auth/cas)</option>
+          <option value="auth/smsCheckCode" data-i18n="auth_type_sms">短信认证 (auth/smsCheckCode)</option>
+          <option value="auth/httpsOauth2" data-i18n="auth_type_oauth2">HTTPS OAuth2 (auth/httpsOauth2)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <button id="btn-probe" type="button" data-i18n="btn_probe_auth">探测登录方式</button>
+        <span id="probe-status" class="hint"></span>
+      </div>
+      <div id="probe-results" class="probe-results hidden"></div>
+      <p class="hint" data-i18n="hint_probe">探测会调用核心的 authInfo 命令，列出服务器支持的登录域与认证方式，点击其中一项即可填入。</p>
+      <p class="hint" data-i18n="hint_other_auto">非 ZJU 用户会自动应用 disableZJUConfig 与 skipDomainResource（仅使用服务端下发的资源规则）。</p>
+
+      <div class="field" id="field-phone">
+        <label for="phone" data-i18n="label_phone">手机号</label>
+        <input id="phone" type="tel" autocomplete="off" spellcheck="false" data-i18n-placeholder="placeholder_phone">
+      </div>
+      <p id="hint-phone" class="hint" data-i18n="hint_phone">认证方式选择“短信认证”时必须填写手机号（含国家码，例如 8613800138000）。</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="section_advanced">高级</h2>
+
+      <div class="field">
+        <label for="totp" data-i18n="label_totp">TOTP 密钥</label>
+        <input id="totp" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="placeholder_totp">
+      </div>
+      <p class="hint" data-i18n="hint_totp">可选；用于自动完成动态口令（二次认证）。留空则在需要时手动输入。</p>
+
+      <div class="field">
+        <label for="socks-port" data-i18n="label_socks_port">SOCKS 端口</label>
+        <input id="socks-port" type="number" min="0" max="65535" step="1" data-i18n-placeholder="placeholder_port_auto">
+      </div>
+      <div class="field">
+        <label for="http-port" data-i18n="label_http_port">HTTP 端口</label>
+        <input id="http-port" type="number" min="0" max="65535" step="1" data-i18n-placeholder="placeholder_port_auto">
+      </div>
+      <p class="hint" data-i18n="hint_port_auto">留空 = 自动分配端口（核心默认 127.0.0.1:0）。代理只监听回环地址。</p>
+
+      <label class="checkline">
+        <input id="debug" type="checkbox">
+        <span data-i18n="label_debug">调试日志</span>
+      </label>
+      <label class="checkline">
+        <input id="proxy-all" type="checkbox">
+        <span data-i18n="label_proxy_all">全部流量走 VPN（proxyAll，调试用）</span>
+      </label>
+      <p class="hint" data-i18n="hint_proxy_all">默认仅 ZJU 资源与规则匹配的流量走 RVPN，其余直连。</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="section_core">核心诊断</h2>
+      <dl id="core-grid" class="core-grid"></dl>
+      <div class="row">
+        <button id="btn-selftest" type="button" data-i18n="btn_selftest">连通性自检</button>
+        <button id="btn-refresh-core" type="button" data-i18n="btn_refresh_core">刷新核心信息</button>
+        <button id="btn-reconnect" type="button" data-i18n="btn_reconnect">重新连接</button>
+        <button id="btn-copy-diag" type="button" data-i18n="btn_copy_diag">复制诊断信息</button>
+      </div>
+      <p id="selftest-result" class="hint"></p>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2 data-i18n="log_heading">事件日志</h2>
+        <button id="btn-clear-log" type="button" class="link-btn" data-i18n="btn_clear_log">清空</button>
+      </div>
+      <div id="log-view" class="log-view"></div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="footer-left">
+      <button id="btn-save" type="button" class="primary" data-i18n="btn_save">保存</button>
+      <button id="btn-save-connect" type="button" data-i18n="btn_save_connect">保存并连接</button>
+      <button id="btn-reset" type="button" data-i18n="btn_reset">恢复默认</button>
+    </div>
+    <span id="save-result" class="hint"></span>
+  </footer>
+
+  <script src="lib/common.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+// Root build script: only declares the Android Gradle Plugin so that the
+// version is shared by every module.
+plugins {
+    id 'com.android.application' version '8.7.3' apply false
+}

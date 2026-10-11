@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="ext_name">RVPN Browser</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="app-header">
+    <img class="logo" src="icons/icon32.png" alt="" width="28" height="28">
+    <div class="titles">
+      <h1 data-i18n="ext_name">RVPN Browser</h1>
+      <p class="subtitle">
+        <span id="mode-badge" class="badge badge-normal" data-i18n="mode_normal">普通模式</span>
+        <span id="phase-badge" class="badge badge-phase">-</span>
+      </p>
+    </div>
+    <button id="btn-options" type="button" class="icon-btn" data-i18n-title="btn_options_title" title="登录设置">&#9881;</button>
+  </header>
+
+  <div id="alerts" class="alerts"></div>
+
+  <section class="card mode-card">
+    <div class="mode-switch" role="group">
+      <button id="btn-mode-normal" type="button" class="mode-btn" data-i18n="mode_normal">普通模式</button>
+      <button id="btn-mode-rvpn" type="button" class="mode-btn" data-i18n="mode_rvpn">RVPN 模式</button>
+    </div>
+    <p id="mode-hint" class="hint"></p>
+  </section>
+
+  <section id="challenge-area" class="card challenge-card hidden">
+    <h2 class="challenge-title" data-i18n="challenge_heading">需要你输入验证信息</h2>
+    <div id="challenge-list"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="popup_status_heading">连接状态</h2>
+    <dl id="status-grid" class="status-grid"></dl>
+    <p id="state-message" class="state-message"></p>
+    <p id="selftest-result" class="selftest hidden"></p>
+    <div class="row">
+      <button id="btn-selftest" type="button" data-i18n="btn_selftest">连通性自检</button>
+      <button id="btn-reconnect" type="button" data-i18n="btn_reconnect">重新连接</button>
+      <button id="btn-copy-diag" type="button" data-i18n="btn_copy_diag">复制诊断信息</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="section_account">登录信息</h2>
+    <div class="field">
+      <label for="user-type" data-i18n="label_user_type">用户类型</label>
+      <select id="user-type">
+        <option value="zju" data-i18n="user_type_zju">浙江大学用户</option>
+        <option value="other" data-i18n="user_type_other">非 ZJU 用户</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="protocol" data-i18n="label_protocol">协议</label>
+      <select id="protocol">
+        <option value="atrust" data-i18n="protocol_atrust">aTrust（L3，推荐）</option>
+        <option value="easyconnect" data-i18n="protocol_easyconnect">EasyConnect（L2，高级）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="server" data-i18n="label_server">服务器</label>
+      <input id="server" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="placeholder_server">
+    </div>
+    <div class="field" id="field-port">
+      <label for="port" data-i18n="label_port">端口</label>
+      <input id="port" type="number" min="1" max="65535" step="1">
+    </div>
+    <div class="field">
+      <label for="username" data-i18n="label_username">账号</label>
+      <input id="username" type="text" autocomplete="username" spellcheck="false" data-i18n-placeholder="placeholder_username">
+    </div>
+    <div class="field">
+      <label for="password" data-i18n="label_password">密码</label>
+      <input id="password" type="password" autocomplete="current-password">
+    </div>
+    <label class="checkline">
+      <input id="save-password" type="checkbox">
+      <span data-i18n="label_save_password">保存密码（本地明文）</span>
+    </label>
+    <p class="hint warn" data-i18n="hint_password_plain">密码以明文保存在浏览器本地存储中，请自行评估风险。</p>
+    <p class="hint" data-i18n="hint_options_more">登录域、认证方式、TOTP、端口等请在“登录设置”页面中配置。</p>
+    <div class="row">
+      <button id="btn-save-connect" type="button" class="primary" data-i18n="btn_save_connect">保存并连接</button>
+      <button id="btn-open-options" type="button" data-i18n="btn_open_options">登录设置</button>
+    </div>
+    <p id="save-result" class="hint hidden"></p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2 data-i18n="log_heading">事件日志</h2>
+      <button id="btn-clear-log" type="button" class="link-btn" data-i18n="btn_clear_log">清空</button>
+    </div>
+    <div id="log-view" class="log-view"></div>
+  </section>
+
+  <script src="lib/common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

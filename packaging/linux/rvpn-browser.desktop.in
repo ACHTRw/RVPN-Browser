@@ -1,0 +1,20 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RVPN Browser
+GenericName=Web Browser
+GenericName[zh_CN]=网页浏览器
+Comment=Browse the web, with built-in ZJU RVPN (aTrust / EasyConnect) support
+Comment[zh_CN]=内置浙江大学 RVPN（aTrust / EasyConnect）支持的浏览器
+Exec=@BIN@ %U
+Icon=rvpn-browser
+Terminal=false
+StartupNotify=true
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+Actions=NewWindow;
+
+[Desktop Action NewWindow]
+Name=New Window
+Name[zh_CN]=新建窗口
+Exec=@BIN@

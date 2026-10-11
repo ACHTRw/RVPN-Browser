@@ -1,0 +1,592 @@
+{
+  "ext_name": {
+    "message": "RVPN Browser"
+  },
+  "ext_desc": {
+    "message": "浙江大学 RVPN 支持：由本机 rvpn-core 提供 aTrust / EasyConnect 连接，扩展负责登录界面与浏览器代理。"
+  },
+
+  "mode_normal": {
+    "message": "普通模式"
+  },
+  "mode_rvpn": {
+    "message": "RVPN 模式"
+  },
+  "hint_mode_normal": {
+    "message": "普通模式：不使用 VPN，已清除扩展设置的代理。"
+  },
+  "hint_mode_rvpn": {
+    "message": "RVPN 模式：由 rvpn-core 连接学校 VPN，浏览器代理指向核心的 SOCKS5 端口。"
+  },
+  "hint_mode_persist": {
+    "message": "模式会被记住，并在浏览器重启后自动恢复；若 RVPN 无法建立，将自动回到普通模式并说明原因。"
+  },
+  "connecting_rvpn": {
+    "message": "正在启动 RVPN 连接…"
+  },
+  "switching_normal": {
+    "message": "正在切回普通模式…"
+  },
+  "mode_switch_failed": {
+    "message": "模式切换失败：$1"
+  },
+
+  "phase_idle": {
+    "message": "空闲"
+  },
+  "phase_connecting": {
+    "message": "连接中"
+  },
+  "phase_authenticating": {
+    "message": "认证中"
+  },
+  "phase_connected": {
+    "message": "已连接"
+  },
+  "phase_error": {
+    "message": "出错"
+  },
+  "phase_stopping": {
+    "message": "正在停止"
+  },
+
+  "label_phase": {
+    "message": "状态"
+  },
+  "label_server": {
+    "message": "服务器"
+  },
+  "label_port": {
+    "message": "端口"
+  },
+  "label_socks": {
+    "message": "SOCKS5"
+  },
+  "label_http": {
+    "message": "HTTP 代理"
+  },
+  "label_client_ip": {
+    "message": "客户端 IP"
+  },
+  "label_connected_at": {
+    "message": "连接时间"
+  },
+  "label_proxy": {
+    "message": "浏览器代理"
+  },
+  "label_core_version": {
+    "message": "核心版本"
+  },
+  "label_zjuconnect_version": {
+    "message": "zju-connect 版本"
+  },
+  "label_platform": {
+    "message": "平台"
+  },
+  "label_capabilities": {
+    "message": "核心能力"
+  },
+  "label_native_host": {
+    "message": "本机程序"
+  },
+  "label_core_error": {
+    "message": "核心错误"
+  },
+  "label_user_type": {
+    "message": "用户类型"
+  },
+  "label_protocol": {
+    "message": "协议"
+  },
+  "label_username": {
+    "message": "账号"
+  },
+  "label_password": {
+    "message": "密码"
+  },
+  "label_save_password": {
+    "message": "保存密码"
+  },
+  "label_login_domain": {
+    "message": "登录域"
+  },
+  "label_auth_type": {
+    "message": "认证方式"
+  },
+  "label_phone": {
+    "message": "手机号"
+  },
+  "label_totp": {
+    "message": "TOTP 密钥"
+  },
+  "label_socks_port": {
+    "message": "SOCKS 端口"
+  },
+  "label_http_port": {
+    "message": "HTTP 端口"
+  },
+  "label_debug": {
+    "message": "调试日志"
+  },
+  "label_proxy_all": {
+    "message": "全部流量走 VPN（proxyAll）"
+  },
+
+  "placeholder_server": {
+    "message": "例如 vpn.zju.edu.cn"
+  },
+  "placeholder_username": {
+    "message": "学号 / 工号 / 账号"
+  },
+  "placeholder_login_domain": {
+    "message": "例如 Radius"
+  },
+  "placeholder_phone": {
+    "message": "含国家码，例如 8613800138000"
+  },
+  "placeholder_totp": {
+    "message": "可选，Base32 密钥"
+  },
+  "placeholder_port_auto": {
+    "message": "留空 = 自动"
+  },
+  "placeholder_code": {
+    "message": "请输入验证码"
+  },
+  "placeholder_sms_code": {
+    "message": "请输入短信验证码"
+  },
+  "placeholder_callback_url": {
+    "message": "粘贴回调 URL"
+  },
+
+  "user_type_zju": {
+    "message": "浙江大学用户"
+  },
+  "user_type_other": {
+    "message": "非 ZJU 用户"
+  },
+  "protocol_atrust": {
+    "message": "aTrust（L3，推荐）"
+  },
+  "protocol_easyconnect": {
+    "message": "EasyConnect（L2，高级选项）"
+  },
+  "auth_type_auto": {
+    "message": "自动"
+  },
+  "auth_type_psw": {
+    "message": "账号密码（auth/psw）"
+  },
+  "auth_type_cas": {
+    "message": "CAS 统一身份认证（auth/cas）"
+  },
+  "auth_type_sms": {
+    "message": "短信认证（auth/smsCheckCode）"
+  },
+  "auth_type_oauth2": {
+    "message": "HTTPS OAuth2（auth/httpsOauth2）"
+  },
+
+  "options_title": {
+    "message": "RVPN 登录与连接设置"
+  },
+  "options_subtitle": {
+    "message": "VPN 连接由本机 rvpn-core 提供，扩展负责界面与浏览器代理。"
+  },
+  "section_account": {
+    "message": "账号"
+  },
+  "section_advanced": {
+    "message": "高级"
+  },
+  "section_core": {
+    "message": "核心诊断"
+  },
+  "mode_heading": {
+    "message": "模式"
+  },
+  "hint_user_type": {
+    "message": "浙江大学用户使用内置服务器与规则；非 ZJU 用户需要自行填写服务器、端口、登录域与认证方式。"
+  },
+  "hint_server": {
+    "message": "留空时按用户类型自动使用内置地址（ZJU：vpn.zju.edu.cn / rvpn.zju.edu.cn）。"
+  },
+  "hint_protocol_atrust_zju": {
+    "message": "ZJU 默认 aTrust（L3），服务器自动填写 vpn.zju.edu.cn，登录域固定为 Radius。"
+  },
+  "hint_protocol_easyconnect_zju": {
+    "message": "EasyConnect（L2，高级选项）：兼容旧版客户端，服务器自动填写 rvpn.zju.edu.cn。"
+  },
+  "hint_protocol_atrust": {
+    "message": "aTrust（L3）为非 ZJU 服务器的默认协议，可先“探测登录方式”获取登录域与认证方式。"
+  },
+  "hint_protocol_easyconnect": {
+    "message": "EasyConnect（L2，高级选项）：部分服务器只支持该协议。"
+  },
+  "hint_login_domain_zju": {
+    "message": "浙江大学用户的登录域固定为 Radius。"
+  },
+  "hint_login_domain_other": {
+    "message": "非 ZJU 用户请填写服务器下发的登录域，或使用“探测登录方式”自动获取。"
+  },
+  "warn_password_plain": {
+    "message": "密码以明文形式保存在浏览器本地存储（chrome.storage.local）中，仅本机可读；不勾选“保存密码”时，密码只保存在后台内存中，浏览器重启后需重新输入。"
+  },
+  "hint_password_plain": {
+    "message": "注意：密码以明文保存在浏览器本地存储中，请自行评估风险。"
+  },
+  "hint_password_not_saved": {
+    "message": "已选择不保存密码，密码仅在本次会话内有效。"
+  },
+  "hint_options_more": {
+    "message": "登录域、认证方式、TOTP、端口等请在“登录设置”页面中配置。"
+  },
+  "hint_phone": {
+    "message": "认证方式选择“短信认证”时必须填写手机号（含国家码，例如 8613800138000）。"
+  },
+  "hint_phone_zju": {
+    "message": "可选：若学校要求短信二次验证，请填写手机号（含国家码）。"
+  },
+  "hint_totp": {
+    "message": "可选；用于自动完成动态口令（二次认证）。留空则在需要时手动输入。"
+  },
+  "hint_port_auto": {
+    "message": "留空 = 自动分配端口（核心默认 127.0.0.1:0）。代理只监听回环地址。"
+  },
+  "hint_proxy_all": {
+    "message": "默认只有命中 ZJU 资源与规则的流量走 RVPN，其余直连。"
+  },
+  "hint_probe": {
+    "message": "探测会调用核心的 authInfo 命令，列出服务器支持的登录域与认证方式，点击其中一项即可填入。"
+  },
+  "hint_other_auto": {
+    "message": "非 ZJU 用户会自动应用 disableZJUConfig 与 skipDomainResource（仅使用服务端下发的资源规则）。"
+  },
+
+  "btn_options_title": {
+    "message": "登录设置"
+  },
+  "btn_open_options": {
+    "message": "登录设置"
+  },
+  "btn_save": {
+    "message": "保存"
+  },
+  "btn_save_connect": {
+    "message": "保存并连接"
+  },
+  "btn_reset": {
+    "message": "恢复默认"
+  },
+  "btn_selftest": {
+    "message": "连通性自检"
+  },
+  "btn_reconnect": {
+    "message": "重新连接"
+  },
+  "btn_retry": {
+    "message": "重试"
+  },
+  "btn_copy_diag": {
+    "message": "复制诊断信息"
+  },
+  "btn_clear_log": {
+    "message": "清空"
+  },
+  "btn_probe_auth": {
+    "message": "探测登录方式"
+  },
+  "btn_refresh_core": {
+    "message": "刷新核心信息"
+  },
+
+  "popup_status_heading": {
+    "message": "连接状态"
+  },
+  "log_heading": {
+    "message": "事件日志"
+  },
+  "log_empty": {
+    "message": "暂无日志"
+  },
+  "core_not_connected": {
+    "message": "尚未连接到 rvpn-core。"
+  },
+
+  "alert_core_missing_title": {
+    "message": "未检测到本机 rvpn-core"
+  },
+  "alert_core_missing_body": {
+    "message": "扩展无法连接到本机原生程序 $1。请确认已安装 rvpn-core 及其 native messaging 清单，然后重试。错误：$2"
+  },
+  "alert_fallback_title": {
+    "message": "上次 RVPN 连接失败，已切回普通模式"
+  },
+  "alert_fallback_body": {
+    "message": "时间：$1；原因：$2"
+  },
+  "alert_suspended_title": {
+    "message": "RVPN 代理已暂停"
+  },
+
+  "suspend_core_down": {
+    "message": "与 rvpn-core 的连接已断开，浏览器代理已清除（$1）。正在自动重连。"
+  },
+  "suspend_no_socks": {
+    "message": "rvpn-core 尚未提供 SOCKS5 端口，浏览器代理暂未启用。"
+  },
+  "suspend_proxy_failed": {
+    "message": "设置浏览器代理失败：$1"
+  },
+  "proxy_applied": {
+    "message": "已启用（$1）"
+  },
+  "proxy_not_applied": {
+    "message": "未启用"
+  },
+  "proxy_none": {
+    "message": "普通模式，未设置代理"
+  },
+
+  "challenge_heading": {
+    "message": "需要你输入验证信息"
+  },
+  "challenge_type_text": {
+    "message": "图形验证码"
+  },
+  "challenge_type_clickCode": {
+    "message": "点选验证码"
+  },
+  "challenge_type_smsCode": {
+    "message": "短信验证码"
+  },
+  "challenge_type_totp": {
+    "message": "动态口令"
+  },
+  "challenge_type_radiusCode": {
+    "message": "Radius 验证码"
+  },
+  "challenge_type_secondaryAuth": {
+    "message": "二次认证"
+  },
+  "challenge_type_externalLogin": {
+    "message": "外部登录（CAS / OAuth2）"
+  },
+  "challenge_submit": {
+    "message": "提交"
+  },
+  "challenge_undo": {
+    "message": "撤销"
+  },
+  "challenge_clear": {
+    "message": "清空"
+  },
+  "challenge_skip_secondary": {
+    "message": "跳过二次认证"
+  },
+  "challenge_points": {
+    "message": "已选 $1 个点"
+  },
+  "challenge_points_required": {
+    "message": "请先在图片上点选"
+  },
+  "challenge_empty_input": {
+    "message": "请先填写内容"
+  },
+  "challenge_open_login": {
+    "message": "打开登录页面"
+  },
+  "challenge_no_login_url": {
+    "message": "核心未提供登录 URL，请在浏览器中完成登录后粘贴回调地址。"
+  },
+  "challenge_deadline_in": {
+    "message": "剩余时间 $1"
+  },
+  "challenge_expired": {
+    "message": "该验证请求已超时"
+  },
+  "challenge_submitted_wait": {
+    "message": "已提交，等待核心处理…"
+  },
+  "challenge_answer_sent": {
+    "message": "已提交验证信息"
+  },
+  "challenge_answer_failed": {
+    "message": "提交失败：$1"
+  },
+  "challenge_image_failed": {
+    "message": "验证码图片加载失败"
+  },
+
+  "notif_challenge_title": {
+    "message": "RVPN 需要验证"
+  },
+  "notif_fallback_title": {
+    "message": "RVPN 连接失败"
+  },
+  "notif_fallback_body": {
+    "message": "已切回普通模式：$1"
+  },
+
+  "selftest_running": {
+    "message": "正在探测 $1 …"
+  },
+  "selftest_ok": {
+    "message": "$1 可达，延迟 $2 ms"
+  },
+  "selftest_unreachable": {
+    "message": "$1 不可达：$2"
+  },
+  "selftest_failed": {
+    "message": "自检失败：$1"
+  },
+  "reconnecting": {
+    "message": "正在重新连接…"
+  },
+  "reconnect_ok": {
+    "message": "已连接到 rvpn-core"
+  },
+  "reconnect_failed": {
+    "message": "重连失败：$1"
+  },
+  "core_ok": {
+    "message": "已获取核心信息"
+  },
+  "core_unavailable": {
+    "message": "无法获取核心信息：$1"
+  },
+
+  "probe_running": {
+    "message": "正在探测 $1 …"
+  },
+  "probe_empty": {
+    "message": "服务器未返回可用的登录方式，请手动填写登录域与认证方式。"
+  },
+  "probe_failed": {
+    "message": "探测失败：$1"
+  },
+  "probe_result_hint": {
+    "message": "点击下面任意一项以填入登录域与认证方式。"
+  },
+  "probe_applied": {
+    "message": "已填入：登录域 $1，认证方式 $2"
+  },
+
+  "saving": {
+    "message": "正在保存…"
+  },
+  "saved_ok": {
+    "message": "设置已保存"
+  },
+  "save_failed": {
+    "message": "保存失败：$1"
+  },
+  "reset_done": {
+    "message": "已恢复默认值（尚未保存）"
+  },
+  "diag_copied": {
+    "message": "诊断信息已复制到剪贴板"
+  },
+  "diag_copy_failed": {
+    "message": "复制失败，请手动选择文本"
+  },
+  "value_connected": {
+    "message": "已连接"
+  },
+  "value_disconnected": {
+    "message": "未连接"
+  },
+
+  "err_unknown": {
+    "message": "未知错误"
+  },
+  "err_host_not_found": {
+    "message": "未找到本机程序 com.achtrw.rvpn（native messaging host 未安装或路径错误）"
+  },
+  "err_timeout": {
+    "message": "请求超时（$1）"
+  },
+  "err_disconnected": {
+    "message": "与 rvpn-core 的连接已断开"
+  },
+  "err_core_error": {
+    "message": "rvpn-core 返回错误"
+  },
+  "err_unknown_command": {
+    "message": "未知命令：$1"
+  },
+  "err_server_required": {
+    "message": "请填写服务器地址"
+  },
+  "err_username_required": {
+    "message": "请填写账号"
+  },
+  "err_bad_port": {
+    "message": "端口必须是 1-65535 之间的整数"
+  },
+  "err_phone_required": {
+    "message": "短信认证需要填写手机号"
+  },
+  "err_bad_socks_addr": {
+    "message": "核心返回的 SOCKS 地址无效：$1"
+  },
+  "err_no_challenge_id": {
+    "message": "缺少验证请求 ID"
+  },
+  "err_answer_rejected": {
+    "message": "核心拒绝了本次验证信息"
+  },
+
+  "log_installed": {
+    "message": "扩展已安装 / 更新（$1）"
+  },
+  "log_startup": {
+    "message": "浏览器启动，恢复模式：$1"
+  },
+  "log_restore_ok": {
+    "message": "已按上次的模式自动恢复 RVPN 连接"
+  },
+  "log_mode_normal": {
+    "message": "已切换到普通模式（已清除代理）"
+  },
+  "log_mode_rvpn": {
+    "message": "已切换到 RVPN 模式"
+  },
+  "log_starting": {
+    "message": "正在启动 rvpn-core：$1"
+  },
+  "log_start_failed": {
+    "message": "启动失败：$1"
+  },
+  "log_stopped": {
+    "message": "rvpn-core 已停止"
+  },
+  "log_stop_failed": {
+    "message": "停止失败：$1"
+  },
+  "log_core_disconnected": {
+    "message": "与 rvpn-core 断开：$1"
+  },
+  "log_core_reconnected": {
+    "message": "已重新连接到 rvpn-core"
+  },
+  "log_proxy_applied": {
+    "message": "浏览器代理已指向 $1"
+  },
+  "log_proxy_failed": {
+    "message": "设置浏览器代理失败：$1"
+  },
+  "log_fallback": {
+    "message": "RVPN 启动失败，已回退到普通模式：$1"
+  },
+  "log_challenge_received": {
+    "message": "收到验证请求：$1"
+  },
+  "log_settings_saved": {
+    "message": "设置已保存"
+  },
+  "log_settings_restart": {
+    "message": "连接相关设置已变更，正在重新启动核心"
+  }
+}

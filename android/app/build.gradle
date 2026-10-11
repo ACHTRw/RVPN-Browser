@@ -1,0 +1,115 @@
+plugins {
+    id 'com.android.application'
+}
+
+// ---------------------------------------------------------------------------
+// RVPN engine (gomobile AAR)
+//
+// build.sh copies ../core/build/rvpncore.aar to app/libs/rvpncore.aar before
+// invoking Gradle and aborts with a clear message when neither exists. The
+// guard below keeps `gradle` usable (IDE sync, `gradle tasks`) when the AAR has
+// not been produced yet; compiling the app without it fails with
+// "package org.rvpnbrowser.core.rvpncore does not exist", which is the expected
+// behaviour.
+// ---------------------------------------------------------------------------
+def rvpnCoreAar = file('libs/rvpncore.aar')
+if (!rvpnCoreAar.exists()) {
+    logger.warn('[RVPN] app/libs/rvpncore.aar is missing - the RVPN engine will not be available. ' +
+            'Run ./build.sh, which copies it from ../core/build/rvpncore.aar.')
+}
+
+// Optional release signing: export RVPN_KEYSTORE / RVPN_KEYSTORE_PASSWORD /
+// RVPN_KEY_ALIAS / RVPN_KEY_PASSWORD (or pass -PRELEASE_STORE_FILE=...).
+// Without them assembleRelease still works and produces an unsigned APK.
+def ksPath = project.findProperty('RELEASE_STORE_FILE') ?: System.getenv('RVPN_KEYSTORE')
+def ksStorePass = project.findProperty('RELEASE_STORE_PASSWORD') ?: System.getenv('RVPN_KEYSTORE_PASSWORD')
+def ksAlias = project.findProperty('RELEASE_KEY_ALIAS') ?: System.getenv('RVPN_KEY_ALIAS')
+def ksKeyPass = project.findProperty('RELEASE_KEY_PASSWORD') ?: System.getenv('RVPN_KEY_PASSWORD')
+def hasKeystore = ksPath != null && !ksPath.toString().trim().isEmpty()
+
+android {
+    namespace 'com.rvpnbrowser.browser'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.rvpnbrowser.browser'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+
+        // Ship Chinese (default, res/values) and English (res/values-en) only.
+        // Libraries would otherwise contribute dozens of unused translations.
+        resourceConfigurations.addAll(['zh', 'en'])
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
+        if (hasKeystore) {
+            release {
+                storeFile file(ksPath.toString())
+                storePassword ksStorePass
+                keyAlias ksAlias
+                keyPassword ksKeyPass
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (hasKeystore) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            excludes += [
+                    'META-INF/DEPENDENCIES',
+                    'META-INF/LICENSE',
+                    'META-INF/LICENSE.txt',
+                    'META-INF/NOTICE',
+                    'META-INF/NOTICE.txt',
+                    'META-INF/AL2.0',
+                    'META-INF/LGPL2.1',
+                    'META-INF/*.kotlin_module',
+            ]
+        }
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        warningsAsErrors false
+    }
+}
+
+dependencies {
+    if (rvpnCoreAar.exists()) {
+        implementation files(rvpnCoreAar)
+    }
+
+    // ProxyController / WebViewFeature: the only way to point *all* WebViews of
+    // the app at the core's local proxy.
+    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core:1.13.1'
+}

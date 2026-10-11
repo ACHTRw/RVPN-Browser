@@ -1,0 +1,31 @@
+// RVPN Browser - Android front-end
+//
+// Single-module Gradle build. Repositories are declared centrally here; the
+// Aliyun mirrors are listed as well because they are considerably faster than
+// dl.google.com / repo1.maven.org from mainland China. Gradle tries the
+// repositories in declaration order and falls through on a miss, so keeping
+// google()/mavenCentral() first is safe and the mirrors act as a fallback.
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url = 'https://maven.aliyun.com/repository/google' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = 'https://maven.aliyun.com/repository/google' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+    }
+}
+
+rootProject.name = 'RVPNBrowser'
+include ':app'

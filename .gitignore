@@ -1,0 +1,27 @@
+# build outputs
+core/bin/
+core/build/
+*.aar
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/libs/*.aar
+out/
+*.apk
+*.aab
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+
+# keys and secrets (never commit)
+.keys/
+*.pem
+*.keystore
+*.jks
+
+# local notes
+*.log
+.DS_Store
+__pycache__/

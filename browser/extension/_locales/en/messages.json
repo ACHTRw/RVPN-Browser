@@ -1,0 +1,592 @@
+{
+  "ext_name": {
+    "message": "RVPN Browser"
+  },
+  "ext_desc": {
+    "message": "Zhejiang University RVPN support: the local rvpn-core binary provides the aTrust / EasyConnect tunnel, the extension provides the UI and the browser proxy."
+  },
+
+  "mode_normal": {
+    "message": "Normal mode"
+  },
+  "mode_rvpn": {
+    "message": "RVPN mode"
+  },
+  "hint_mode_normal": {
+    "message": "Normal mode: no VPN, any proxy override set by the extension is cleared."
+  },
+  "hint_mode_rvpn": {
+    "message": "RVPN mode: rvpn-core connects to the campus VPN and the browser proxy points at the core SOCKS5 port."
+  },
+  "hint_mode_persist": {
+    "message": "The mode is remembered and restored after a browser restart. If RVPN cannot be established the extension falls back to normal mode and tells you why."
+  },
+  "connecting_rvpn": {
+    "message": "Starting the RVPN connection…"
+  },
+  "switching_normal": {
+    "message": "Switching back to normal mode…"
+  },
+  "mode_switch_failed": {
+    "message": "Could not switch mode: $1"
+  },
+
+  "phase_idle": {
+    "message": "Idle"
+  },
+  "phase_connecting": {
+    "message": "Connecting"
+  },
+  "phase_authenticating": {
+    "message": "Authenticating"
+  },
+  "phase_connected": {
+    "message": "Connected"
+  },
+  "phase_error": {
+    "message": "Error"
+  },
+  "phase_stopping": {
+    "message": "Stopping"
+  },
+
+  "label_phase": {
+    "message": "State"
+  },
+  "label_server": {
+    "message": "Server"
+  },
+  "label_port": {
+    "message": "Port"
+  },
+  "label_socks": {
+    "message": "SOCKS5"
+  },
+  "label_http": {
+    "message": "HTTP proxy"
+  },
+  "label_client_ip": {
+    "message": "Client IP"
+  },
+  "label_connected_at": {
+    "message": "Connected at"
+  },
+  "label_proxy": {
+    "message": "Browser proxy"
+  },
+  "label_core_version": {
+    "message": "Core version"
+  },
+  "label_zjuconnect_version": {
+    "message": "zju-connect version"
+  },
+  "label_platform": {
+    "message": "Platform"
+  },
+  "label_capabilities": {
+    "message": "Capabilities"
+  },
+  "label_native_host": {
+    "message": "Native host"
+  },
+  "label_core_error": {
+    "message": "Core error"
+  },
+  "label_user_type": {
+    "message": "User type"
+  },
+  "label_protocol": {
+    "message": "Protocol"
+  },
+  "label_username": {
+    "message": "Username"
+  },
+  "label_password": {
+    "message": "Password"
+  },
+  "label_save_password": {
+    "message": "Save password"
+  },
+  "label_login_domain": {
+    "message": "Login domain"
+  },
+  "label_auth_type": {
+    "message": "Auth type"
+  },
+  "label_phone": {
+    "message": "Phone number"
+  },
+  "label_totp": {
+    "message": "TOTP secret"
+  },
+  "label_socks_port": {
+    "message": "SOCKS port"
+  },
+  "label_http_port": {
+    "message": "HTTP port"
+  },
+  "label_debug": {
+    "message": "Debug log"
+  },
+  "label_proxy_all": {
+    "message": "Route all traffic through the VPN (proxyAll)"
+  },
+
+  "placeholder_server": {
+    "message": "e.g. vpn.zju.edu.cn"
+  },
+  "placeholder_username": {
+    "message": "Student / staff ID or account"
+  },
+  "placeholder_login_domain": {
+    "message": "e.g. Radius"
+  },
+  "placeholder_phone": {
+    "message": "With country code, e.g. 8613800138000"
+  },
+  "placeholder_totp": {
+    "message": "Optional Base32 secret"
+  },
+  "placeholder_port_auto": {
+    "message": "Empty = automatic"
+  },
+  "placeholder_code": {
+    "message": "Enter the code"
+  },
+  "placeholder_sms_code": {
+    "message": "Enter the SMS code"
+  },
+  "placeholder_callback_url": {
+    "message": "Paste the callback URL"
+  },
+
+  "user_type_zju": {
+    "message": "Zhejiang University user"
+  },
+  "user_type_other": {
+    "message": "Non-ZJU user"
+  },
+  "protocol_atrust": {
+    "message": "aTrust (L3, recommended)"
+  },
+  "protocol_easyconnect": {
+    "message": "EasyConnect (L2, advanced)"
+  },
+  "auth_type_auto": {
+    "message": "Automatic"
+  },
+  "auth_type_psw": {
+    "message": "Username and password (auth/psw)"
+  },
+  "auth_type_cas": {
+    "message": "CAS single sign-on (auth/cas)"
+  },
+  "auth_type_sms": {
+    "message": "SMS code (auth/smsCheckCode)"
+  },
+  "auth_type_oauth2": {
+    "message": "HTTPS OAuth2 (auth/httpsOauth2)"
+  },
+
+  "options_title": {
+    "message": "RVPN login and connection settings"
+  },
+  "options_subtitle": {
+    "message": "The VPN tunnel is provided by the local rvpn-core binary; the extension provides the UI and the browser proxy."
+  },
+  "section_account": {
+    "message": "Account"
+  },
+  "section_advanced": {
+    "message": "Advanced"
+  },
+  "section_core": {
+    "message": "Core diagnostics"
+  },
+  "mode_heading": {
+    "message": "Mode"
+  },
+  "hint_user_type": {
+    "message": "ZJU users get the built-in servers and routing rules; non-ZJU users must fill in server, port, login domain and auth type themselves."
+  },
+  "hint_server": {
+    "message": "Leave empty to use the built-in address for the selected user type (ZJU: vpn.zju.edu.cn / rvpn.zju.edu.cn)."
+  },
+  "hint_protocol_atrust_zju": {
+    "message": "aTrust (L3) is the ZJU default: the server is filled in as vpn.zju.edu.cn and the login domain is fixed to Radius."
+  },
+  "hint_protocol_easyconnect_zju": {
+    "message": "EasyConnect (L2, advanced): legacy client compatibility, the server is filled in as rvpn.zju.edu.cn."
+  },
+  "hint_protocol_atrust": {
+    "message": "aTrust (L3) is the default protocol for non-ZJU servers; use \"Probe auth methods\" to discover the login domain and auth type."
+  },
+  "hint_protocol_easyconnect": {
+    "message": "EasyConnect (L2, advanced): some servers only support this protocol."
+  },
+  "hint_login_domain_zju": {
+    "message": "The login domain is fixed to Radius for Zhejiang University users."
+  },
+  "hint_login_domain_other": {
+    "message": "Non-ZJU users should enter the login domain advertised by the server, or use \"Probe auth methods\"."
+  },
+  "warn_password_plain": {
+    "message": "The password is stored in plain text in local browser storage (chrome.storage.local), readable only on this machine. If \"Save password\" is unchecked it is kept in background memory only and must be re-entered after a browser restart."
+  },
+  "hint_password_plain": {
+    "message": "Note: the password is stored in plain text in local browser storage. Judge the risk yourself."
+  },
+  "hint_password_not_saved": {
+    "message": "Password saving is off; the password is only valid for this session."
+  },
+  "hint_options_more": {
+    "message": "Login domain, auth type, TOTP and ports are configured on the \"Login settings\" page."
+  },
+  "hint_phone": {
+    "message": "Required when the auth type is \"SMS code\" (include the country code, e.g. 8613800138000)."
+  },
+  "hint_phone_zju": {
+    "message": "Optional: fill this in if your campus account uses SMS second-factor verification (include the country code)."
+  },
+  "hint_totp": {
+    "message": "Optional; used to answer TOTP / second-factor challenges automatically. Leave empty to type codes by hand."
+  },
+  "hint_port_auto": {
+    "message": "Empty = pick a free port automatically (core default 127.0.0.1:0). Proxies only listen on loopback."
+  },
+  "hint_proxy_all": {
+    "message": "By default only traffic matching ZJU resources and rules goes through RVPN; everything else is direct."
+  },
+  "hint_probe": {
+    "message": "The probe calls the core `authInfo` command and lists the login domains / auth types offered by the server; click one to fill it in."
+  },
+  "hint_other_auto": {
+    "message": "For non-ZJU users disableZJUConfig and skipDomainResource are applied automatically (server-provided resource rules only)."
+  },
+
+  "btn_options_title": {
+    "message": "Login settings"
+  },
+  "btn_open_options": {
+    "message": "Login settings"
+  },
+  "btn_save": {
+    "message": "Save"
+  },
+  "btn_save_connect": {
+    "message": "Save and connect"
+  },
+  "btn_reset": {
+    "message": "Restore defaults"
+  },
+  "btn_selftest": {
+    "message": "Connectivity self-test"
+  },
+  "btn_reconnect": {
+    "message": "Reconnect"
+  },
+  "btn_retry": {
+    "message": "Retry"
+  },
+  "btn_copy_diag": {
+    "message": "Copy diagnostics"
+  },
+  "btn_clear_log": {
+    "message": "Clear"
+  },
+  "btn_probe_auth": {
+    "message": "Probe auth methods"
+  },
+  "btn_refresh_core": {
+    "message": "Refresh core info"
+  },
+
+  "popup_status_heading": {
+    "message": "Connection status"
+  },
+  "log_heading": {
+    "message": "Event log"
+  },
+  "log_empty": {
+    "message": "No log entries yet"
+  },
+  "core_not_connected": {
+    "message": "Not connected to rvpn-core yet."
+  },
+
+  "alert_core_missing_title": {
+    "message": "rvpn-core was not found"
+  },
+  "alert_core_missing_body": {
+    "message": "The extension cannot reach the native host $1. Make sure rvpn-core and its native messaging manifest are installed, then retry. Error: $2"
+  },
+  "alert_fallback_title": {
+    "message": "The last RVPN connection failed, normal mode was restored"
+  },
+  "alert_fallback_body": {
+    "message": "Time: $1; reason: $2"
+  },
+  "alert_suspended_title": {
+    "message": "RVPN proxy is suspended"
+  },
+
+  "suspend_core_down": {
+    "message": "The connection to rvpn-core dropped and the browser proxy was cleared ($1). Reconnecting automatically."
+  },
+  "suspend_no_socks": {
+    "message": "rvpn-core has not exposed a SOCKS5 port yet, the browser proxy is not active."
+  },
+  "suspend_proxy_failed": {
+    "message": "Could not set the browser proxy: $1"
+  },
+  "proxy_applied": {
+    "message": "active ($1)"
+  },
+  "proxy_not_applied": {
+    "message": "not active"
+  },
+  "proxy_none": {
+    "message": "normal mode, no proxy override"
+  },
+
+  "challenge_heading": {
+    "message": "Verification input required"
+  },
+  "challenge_type_text": {
+    "message": "Image captcha"
+  },
+  "challenge_type_clickCode": {
+    "message": "Click captcha"
+  },
+  "challenge_type_smsCode": {
+    "message": "SMS code"
+  },
+  "challenge_type_totp": {
+    "message": "One-time password"
+  },
+  "challenge_type_radiusCode": {
+    "message": "Radius code"
+  },
+  "challenge_type_secondaryAuth": {
+    "message": "Secondary authentication"
+  },
+  "challenge_type_externalLogin": {
+    "message": "External login (CAS / OAuth2)"
+  },
+  "challenge_submit": {
+    "message": "Submit"
+  },
+  "challenge_undo": {
+    "message": "Undo"
+  },
+  "challenge_clear": {
+    "message": "Clear"
+  },
+  "challenge_skip_secondary": {
+    "message": "Skip secondary authentication"
+  },
+  "challenge_points": {
+    "message": "$1 point(s) selected"
+  },
+  "challenge_points_required": {
+    "message": "Click on the image first"
+  },
+  "challenge_empty_input": {
+    "message": "Please fill this in first"
+  },
+  "challenge_open_login": {
+    "message": "Open the login page"
+  },
+  "challenge_no_login_url": {
+    "message": "The core did not provide a login URL; log in with your browser and paste the callback address."
+  },
+  "challenge_deadline_in": {
+    "message": "Time left $1"
+  },
+  "challenge_expired": {
+    "message": "This challenge has expired"
+  },
+  "challenge_submitted_wait": {
+    "message": "Submitted, waiting for the core…"
+  },
+  "challenge_answer_sent": {
+    "message": "Answer submitted"
+  },
+  "challenge_answer_failed": {
+    "message": "Could not submit: $1"
+  },
+  "challenge_image_failed": {
+    "message": "Could not load the captcha image"
+  },
+
+  "notif_challenge_title": {
+    "message": "RVPN needs verification"
+  },
+  "notif_fallback_title": {
+    "message": "RVPN connection failed"
+  },
+  "notif_fallback_body": {
+    "message": "Switched back to normal mode: $1"
+  },
+
+  "selftest_running": {
+    "message": "Probing $1 …"
+  },
+  "selftest_ok": {
+    "message": "$1 reachable, latency $2 ms"
+  },
+  "selftest_unreachable": {
+    "message": "$1 unreachable: $2"
+  },
+  "selftest_failed": {
+    "message": "Self-test failed: $1"
+  },
+  "reconnecting": {
+    "message": "Reconnecting…"
+  },
+  "reconnect_ok": {
+    "message": "Connected to rvpn-core"
+  },
+  "reconnect_failed": {
+    "message": "Reconnect failed: $1"
+  },
+  "core_ok": {
+    "message": "Core information received"
+  },
+  "core_unavailable": {
+    "message": "Cannot get core information: $1"
+  },
+
+  "probe_running": {
+    "message": "Probing $1 …"
+  },
+  "probe_empty": {
+    "message": "The server returned no auth methods; please fill in the login domain and auth type manually."
+  },
+  "probe_failed": {
+    "message": "Probe failed: $1"
+  },
+  "probe_result_hint": {
+    "message": "Click one of the entries below to fill in the login domain and auth type."
+  },
+  "probe_applied": {
+    "message": "Applied: login domain $1, auth type $2"
+  },
+
+  "saving": {
+    "message": "Saving…"
+  },
+  "saved_ok": {
+    "message": "Settings saved"
+  },
+  "save_failed": {
+    "message": "Save failed: $1"
+  },
+  "reset_done": {
+    "message": "Defaults restored (not saved yet)"
+  },
+  "diag_copied": {
+    "message": "Diagnostics copied to the clipboard"
+  },
+  "diag_copy_failed": {
+    "message": "Copy failed, please select the text manually"
+  },
+  "value_connected": {
+    "message": "connected"
+  },
+  "value_disconnected": {
+    "message": "disconnected"
+  },
+
+  "err_unknown": {
+    "message": "Unknown error"
+  },
+  "err_host_not_found": {
+    "message": "Native host com.achtrw.rvpn not found (native messaging manifest missing or wrong path)"
+  },
+  "err_timeout": {
+    "message": "Request timed out ($1)"
+  },
+  "err_disconnected": {
+    "message": "The connection to rvpn-core was closed"
+  },
+  "err_core_error": {
+    "message": "rvpn-core returned an error"
+  },
+  "err_unknown_command": {
+    "message": "Unknown command: $1"
+  },
+  "err_server_required": {
+    "message": "Please enter the server address"
+  },
+  "err_username_required": {
+    "message": "Please enter the account name"
+  },
+  "err_bad_port": {
+    "message": "The port must be an integer between 1 and 65535"
+  },
+  "err_phone_required": {
+    "message": "SMS authentication requires a phone number"
+  },
+  "err_bad_socks_addr": {
+    "message": "The core returned an invalid SOCKS address: $1"
+  },
+  "err_no_challenge_id": {
+    "message": "Missing challenge id"
+  },
+  "err_answer_rejected": {
+    "message": "The core rejected this answer"
+  },
+
+  "log_installed": {
+    "message": "Extension installed / updated ($1)"
+  },
+  "log_startup": {
+    "message": "Browser started, restoring mode: $1"
+  },
+  "log_restore_ok": {
+    "message": "RVPN connection restored automatically from the saved mode"
+  },
+  "log_mode_normal": {
+    "message": "Switched to normal mode (proxy cleared)"
+  },
+  "log_mode_rvpn": {
+    "message": "Switched to RVPN mode"
+  },
+  "log_starting": {
+    "message": "Starting rvpn-core: $1"
+  },
+  "log_start_failed": {
+    "message": "Start failed: $1"
+  },
+  "log_stopped": {
+    "message": "rvpn-core stopped"
+  },
+  "log_stop_failed": {
+    "message": "Stop failed: $1"
+  },
+  "log_core_disconnected": {
+    "message": "Disconnected from rvpn-core: $1"
+  },
+  "log_core_reconnected": {
+    "message": "Reconnected to rvpn-core"
+  },
+  "log_proxy_applied": {
+    "message": "Browser proxy now points at $1"
+  },
+  "log_proxy_failed": {
+    "message": "Could not set the browser proxy: $1"
+  },
+  "log_fallback": {
+    "message": "RVPN could not start, fell back to normal mode: $1"
+  },
+  "log_challenge_received": {
+    "message": "Challenge received: $1"
+  },
+  "log_settings_saved": {
+    "message": "Settings saved"
+  },
+  "log_settings_restart": {
+    "message": "Connection settings changed, restarting the core"
+  }
+}

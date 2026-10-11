@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+# RVPN Browser launcher for Linux.
+#
+# It guarantees that the RVPN core and the RVPN extension are available to the
+# browser it starts, then hands over to the browser binary. It works with the
+# RVPN Browser build produced by browser/scripts/build-linux.sh and also with a
+# stock Thorium/Chromium/Chrome installation (which is what makes the RVPN
+# integration usable before/without a full source build).
+
+set -euo pipefail
+
+RVPN_SHARE_DIR="${RVPN_SHARE_DIR:-/usr/local/share/rvpn-browser}"
+RVPN_CORE_BIN="${RVPN_CORE_BIN:-}"
+RVPN_EXTENSION_DIR="${RVPN_EXTENSION_DIR:-}"
+RVPN_PROFILE_DIR="${RVPN_PROFILE_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rvpn-browser}"
+RVPN_VERBOSE="${RVPN_VERBOSE:-0}"
+
+log() { [ "$RVPN_VERBOSE" = "1" ] && echo "[rvpn-browser] $*" >&2 || true; }
+warn() { echo "[rvpn-browser] $*" >&2; }
+
+# ---------------------------------------------------------------------------
+# Locate the repository layout when running straight from a git checkout.
+# ---------------------------------------------------------------------------
+self_dir="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+for candidate in "$self_dir/../.." "$self_dir/.."; do
+  if [ -d "$candidate/browser/extension" ] && [ -d "$candidate/core" ]; then
+    repo_root="$(cd "$candidate" && pwd)"
+    break
+  fi
+done
+
+# ---------------------------------------------------------------------------
+# Locate the core binary.
+# ---------------------------------------------------------------------------
+if [ -z "$RVPN_CORE_BIN" ]; then
+  for candidate in \
+      "$RVPN_SHARE_DIR/rvpn-core" \
+      "${repo_root:-}/core/bin/rvpn-core" \
+      "$self_dir/rvpn-core" \
+      "$(command -v rvpn-core 2>/dev/null || true)" \
+      "$HOME/.local/bin/rvpn-core"; do
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      RVPN_CORE_BIN="$candidate"
+      break
+    fi
+  done
+fi
+if [ -z "$RVPN_CORE_BIN" ] || [ ! -x "$RVPN_CORE_BIN" ]; then
+  warn "找不到 rvpn-core（RVPN 引擎）。请先运行 packaging/linux/install.sh 或构建 core/。"
+  warn "rvpn-core was not found; the browser will start but RVPN mode will be unavailable."
+  RVPN_CORE_BIN=""
+fi
+
+# ---------------------------------------------------------------------------
+# Locate the extension.
+# ---------------------------------------------------------------------------
+if [ -z "$RVPN_EXTENSION_DIR" ]; then
+  for candidate in \
+      "$RVPN_SHARE_DIR/extension" \
+      "${repo_root:-}/browser/extension"; do
+    if [ -n "$candidate" ] && [ -f "$candidate/manifest.json" ]; then
+      RVPN_EXTENSION_DIR="$candidate"
+      break
+    fi
+  done
+fi
+
+# ---------------------------------------------------------------------------
+# Register the native messaging host for this profile and for other browsers.
+# ---------------------------------------------------------------------------
+register_native_host() {
+  [ -n "$RVPN_CORE_BIN" ] || return 0
+  local hosts_dir manifest
+  for hosts_dir in \
+      "$RVPN_PROFILE_DIR/NativeMessagingHosts" \
+      "${XDG_CONFIG_HOME:-$HOME/.config}/chromium/NativeMessagingHosts" \
+      "${XDG_CONFIG_HOME:-$HOME/.config}/google-chrome/NativeMessagingHosts" \
+      "${XDG_CONFIG_HOME:-$HOME/.config}/thorium/NativeMessagingHosts" \
+      "${XDG_CONFIG_HOME:-$HOME/.config}/rvpn-browser/NativeMessagingHosts"; do
+    mkdir -p "$hosts_dir" 2>/dev/null || continue
+    manifest="$hosts_dir/com.achtrw.rvpn.json"
+    cat >"$manifest" <<EOF
+{
+  "name": "com.achtrw.rvpn",
+  "description": "RVPN Browser engine (ZJU RVPN / aTrust / EasyConnect)",
+  "path": "$RVPN_CORE_BIN",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://lhgepbmchpealfajciakglacaedkjenh/"
+  ]
+}
+EOF
+    chmod 0644 "$manifest" 2>/dev/null || true
+    log "native messaging host registered at $manifest"
+  done
+}
+register_native_host
+
+# ---------------------------------------------------------------------------
+# Locate the browser binary.
+# ---------------------------------------------------------------------------
+find_browser() {
+  if [ -n "${RVPN_BROWSER_BIN:-}" ]; then
+    echo "$RVPN_BROWSER_BIN"; return 0
+  fi
+  local candidate
+  for candidate in \
+      "${repo_root:-}/out/rvpn-browser/rvpn-browser" \
+      "$RVPN_SHARE_DIR/rvpn-browser-bin" \
+      "/opt/rvpn-browser/rvpn-browser" \
+      "$(command -v rvpn-browser-bin 2>/dev/null || true)" \
+      "$(command -v thorium 2>/dev/null || true)" \
+      "$(command -v thorium-browser 2>/dev/null || true)" \
+      "$(command -v chromium 2>/dev/null || true)" \
+      "$(command -v chromium-browser 2>/dev/null || true)" \
+      "/usr/lib/chromium/chromium" \
+      "$(command -v google-chrome-stable 2>/dev/null || true)" \
+      "$(command -v google-chrome 2>/dev/null || true)"; do
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      echo "$candidate"; return 0
+    fi
+  done
+  return 1
+}
+
+BROWSER_BIN="$(find_browser || true)"
+if [ -z "$BROWSER_BIN" ]; then
+  warn "未找到可用的浏览器内核。请安装 Thorium/Chromium，或先用 browser/scripts/build-linux.sh 构建 RVPN Browser。"
+  warn "No Chromium based browser binary found."
+  exit 1
+fi
+log "browser: $BROWSER_BIN"
+
+# Do not fight with a user supplied profile directory.
+have_profile_arg=0
+for arg in "$@"; do
+  case "$arg" in
+    --user-data-dir=*) RVPN_PROFILE_DIR="${arg#--user-data-dir=}"; have_profile_arg=1 ;;
+  esac
+done
+
+args=(--no-first-run --no-default-browser-check)
+if [ "$have_profile_arg" = "0" ]; then
+  args=(--user-data-dir="$RVPN_PROFILE_DIR" "${args[@]}")
+fi
+
+if [ -n "$RVPN_EXTENSION_DIR" ] && [ -f "$RVPN_EXTENSION_DIR/manifest.json" ]; then
+  args+=(--load-extension="$RVPN_EXTENSION_DIR")
+  log "extension: $RVPN_EXTENSION_DIR"
+fi
+
+exec "$BROWSER_BIN" "${args[@]}" "$@"
