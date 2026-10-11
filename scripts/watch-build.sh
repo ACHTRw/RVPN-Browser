@@ -49,9 +49,11 @@ done
 
 say "build process finished"
 
-if grep -qiE "ninja: build stopped|FAILED: " "$BUILD_LOG" 2>/dev/null; then
+# Ninja prints failures as a bare "FAILED: <target>" line; the pipeline's own
+# progress lines are prefixed with a timestamp, so they must not match here.
+if grep -qE "^(FAILED: |ninja: build stopped)" "$BUILD_LOG" 2>/dev/null; then
   say "BUILD_FAIL - errors in the build log:"
-  grep -iE "ninja: build stopped|FAILED: |error:" "$BUILD_LOG" | tail -15 | tee -a "$REPORT"
+  grep -E "^(FAILED: |ninja: build stopped)|error:" "$BUILD_LOG" | tail -15 | tee -a "$REPORT"
   exit 1
 fi
 
