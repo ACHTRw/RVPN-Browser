@@ -234,6 +234,27 @@ def stage_branding(p: Patcher) -> None:
             p.changed.append(grd)
             p.log(f"{grd}: product name strings")
 
+    # Installer-facing files (only used when enable_linux_installer=true).
+    for rel in ("chrome/installer/linux/common/desktop.template",
+                "chrome/installer/linux/common/installer.include",
+                "chrome/installer/linux/debian/control.template",
+                "chrome/installer/linux/rpm/chrome.spec.template"):
+        path = p.src / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        new_text = text
+        for variant in PRODUCT_VARIANTS:
+            new_text = new_text.replace(f"{variant} Browser", PRODUCT_NAME)
+            new_text = new_text.replace(variant, PRODUCT_NAME)
+        for variant in LOWER_VARIANTS:
+            new_text = new_text.replace(variant, DATA_DIR_BASENAME)
+        if new_text != text:
+            if not p.check_only:
+                path.write_text(new_text, encoding="utf-8")
+            p.changed.append(rel)
+            p.log(f"{rel}: installer metadata")
+
     # Linux man page + desktop template.
     for rel in ("chrome/app/resources/manpage.1.in",):
         path = p.src / rel
