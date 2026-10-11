@@ -184,6 +184,23 @@ node browser/test/harness/test-pages.js        #  74/74 通过（DOM 桩上运�
 宿主缺失时的降级与原因上报、断言失败的重连退避（1 s→30 s）、超时、日志上限、
 点选验证码坐标换算、六种挑战处理、设置清洗等。
 
+## 5.3 APK 静态验证
+
+```bash
+ANDROID_HOME=~/android-sdk android/tools/verify-apk.sh dist/rvpn-browser-1.0.0-android.apk
+```
+
+实测（发布 APK，16 项全部通过）：
+
+```
+OK   package name (com.rvpnbrowser.browser)      OK   RVPN settings activity declared
+OK   versionName (1.0.0) / targetSdkVersion (35) OK   RVPN engine service declared
+OK   minSdkVersion (26)                          OK   engine runs in its own process (:rvpn)
+OK   INTERNET / FOREGROUND_SERVICE / dataSync    OK   service is a foreground service
+OK   Go engine bundled for arm64-v8a/armeabi-v7a/x86_64
+OK   APK signature valid (SHA-256 24ced165...)
+```
+
 ## 6. 需要真实账号的手工验收清单
 
 | # | 步骤 | 预期 |
