@@ -92,7 +92,12 @@ class Patcher:
         return True
 
     def replace_any(self, rel: str, pairs: list[tuple[str, str]], *, required: bool = True) -> bool:
-        """Try a list of (old, new) alternatives, first match wins."""
+        """Try a list of (old, new) alternatives, first match wins.
+
+        The function is idempotent: when the replacement is already present and
+        the original anchor is gone, the file is left untouched and reported as
+        already patched instead of failing.
+        """
         path = self.path(rel)
         text = path.read_text(encoding="utf-8")
         for old, new in pairs:
@@ -104,6 +109,9 @@ class Patcher:
                 self._save(path, text)
                 self.log(f"{rel}: {old!r} -> {new!r}")
                 return True
+        if any(new in text for _, new in pairs):
+            self.skipped.append(f"{rel} (already patched)")
+            return True
         if required:
             anchors = " | ".join(repr(o) for o, _ in pairs)
             raise PatchError(f"{rel}: none of the expected anchors found: {anchors}")
