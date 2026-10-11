@@ -122,7 +122,23 @@ browser/scripts/test-extension.sh --chromium /path/to/chrome
 浏览器只可能通过代理拿到页面内容（模拟宿主记录了 8 次 SOCKS5 CONNECT，页面内容为 `RVPN-MOCK-OK`），
 因此可以证明 RVPN 模式下浏览器流量确实走了本地代理。
 
-### 5.1 扩展逻辑单元测试（无需浏览器）
+### 5.1 真实引擎冒烟测试（安装后的实际链路）
+
+```bash
+node browser/test/real_core_test.mjs --chromium /path/to/chrome
+```
+
+用**真实的 rvpn-core**（安装脚本部署的那个二进制）替换模拟宿主，验证安装后的实际链路：
+
+```
+[PASS] extension reaches the real rvpn-core  -- 1.0.0 protocol-lib v1.3.2-0.20261008095431-c19eb4ed34b9
+[PASS] core reports its capabilities  -- atrust,easyconnect,zju,customServer,captcha,...
+[PASS] selftest reaches vpn.zju.edu.cn:443  -- latency=22ms
+[PASS] authInfo discovers aTrust login methods  -- Radius/auth/psw local/auth/psw
+4/4 checks passed
+```
+
+### 5.2 扩展逻辑单元测试（无需浏览器）
 
 ```bash
 node browser/test/harness/test-background.js   # 124/124 通过（chrome.* 模拟 + 协议级假核心）
