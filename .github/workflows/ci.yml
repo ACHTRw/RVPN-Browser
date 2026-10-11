@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  core:
+    name: RVPN engine (Go)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache-dependency-path: core/go.sum
+      - name: Build
+        run: |
+          go build ./...
+          mkdir -p bin
+          go build -o bin/rvpn-core ./cmd/rvpn-core
+      - name: Vet
+        run: go vet ./...
+      - name: Unit tests (race detector)
+        run: go test -race -count=1 ./rvpn/
+      - name: Cross-compile for Android and ARM64
+        run: |
+          CGO_ENABLED=0 GOOS=android GOARCH=arm64 go build ./...
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o /tmp/rvpn-core-linux-arm64 ./cmd/rvpn-core
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rvpn-core-linux-amd64
+          path: core/bin/rvpn-core
+          if-no-files-found: ignore
+
+  extension:
+    name: Browser extension
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: JSON and JavaScript syntax
+        working-directory: browser/extension
+        run: |
+          python3 -c "import json;[json.load(open(f)) for f in ['manifest.json','_locales/zh_CN/messages.json','_locales/en/messages.json']]"
+          for f in $(find . -name '*.js'); do node --check "$f"; done
+      - name: Extension ID matches the native messaging allow-list
+        working-directory: browser/extension
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, sys
+          manifest = json.load(open('manifest.json'))
+          der = base64.b64decode(manifest['key'])
+          digest = hashlib.sha256(der).hexdigest()[:32]
+          ext_id = ''.join(chr(ord('a') + int(c, 16)) for c in digest)
+          expected = 'lhgepbmchpealfajciakglacaedkjenh'
+          print('extension id:', ext_id)
+          sys.exit(0 if ext_id == expected else 1)
+          PY
+      - name: Logic harness (chrome.* mock + protocol-accurate fake core)
+        run: |
+          node browser/test/harness/test-background.js
+          node browser/test/harness/test-pages.js
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache-dependency-path: core/go.sum
+      - uses: android-actions/setup-android@v3
+      - name: Install NDK and platform
+        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0" "ndk;27.0.12077973" > /dev/null
+      - name: Build the gomobile AAR
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          ./core/scripts/build-android-aar.sh
+      - name: Assemble APKs
+        working-directory: android
+        run: ./build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rvpn-browser-android-apk
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/apk/release/*.apk
