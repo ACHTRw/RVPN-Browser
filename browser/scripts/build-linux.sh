@@ -48,6 +48,8 @@ else
   echo "==> writing low-cost args.gn"
   cat > "$CR_DIR/$OUT_DIR/args.gn" <<'EOF'
 # RVPN Browser - Linux x64
+# Only well established GN arguments are used here: an argument that no longer
+# exists makes gn gen complain, so this list is deliberately conservative.
 target_os = "linux"
 target_cpu = "x64"
 
@@ -57,7 +59,6 @@ is_component_build = false
 
 # Keep the build affordable on small machines: no PGO, no ThinLTO, no CFI.
 use_thin_lto = false
-thin_lto_enable_optimizations = false
 is_cfi = false
 chrome_pgo_phase = 0
 use_lld = true
@@ -71,9 +72,6 @@ enable_stripping = true
 enable_precompiled_headers = false
 treat_warnings_as_errors = false
 disable_fieldtrial_testing_config = true
-enable_reporting = false
-enable_resource_allowlist_generation = false
-enable_profiling = false
 
 # Wider media support, matching Thorium's defaults.
 proprietary_codecs = true
@@ -81,7 +79,6 @@ ffmpeg_branding = "Chrome"
 media_use_ffmpeg = true
 media_use_libvpx = true
 rtc_use_h264 = true
-enable_platform_hevc = true
 use_vaapi = true
 
 # Widevine needs a redistributable CDM payload; the RVPN integration does not.
@@ -90,7 +87,6 @@ bundle_widevine_cdm = false
 
 # No installer packages during development builds.
 enable_linux_installer = false
-enable_distro_version_check = false
 EOF
 fi
 

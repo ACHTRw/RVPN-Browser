@@ -56,8 +56,8 @@ rtc_use_h264 = true
 enable_widevine = false
 bundle_widevine_cdm = false
 
-# RVPN Browser additions (see browser/patches)
-rvpn_browser_build = true
+# The RVPN integration itself is added by browser/scripts/apply-rvpn-patches.py;
+# no custom GN argument is needed (an unknown argument makes gn gen complain).
 EOF
 
 cd "$CR_DIR"
