@@ -56,6 +56,7 @@ run() {
 
 run "mock engine integration (proxy + traffic)" "$@"
 run "challenge round-trip" --challenge "$@"
+run "core crash recovery (proxy must be cleared)" --kill-core "$@"
 
 echo
 if [ "$status" = "0" ]; then echo "==> all extension integration tests passed"; else echo "==> FAILURES (see above)"; fi

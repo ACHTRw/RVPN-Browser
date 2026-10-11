@@ -148,7 +148,10 @@ browser/scripts/test-extension.sh --chromium /path/to/chrome
 11/11 checks passed          # 含 --challenge 的完整验证码往返
 ```
 
-（不带 `--challenge` 时为 8/8；`browser/scripts/test-extension.sh` 会依次运行两种模式。）
+崩溃恢复模式（`--kill-core`）额外验证：RVPN 模式下杀掉核心进程后，扩展会在数秒内**清除代理**
+并给出暂停原因，绝不留下"代理还在但引擎已死"的上网故障状态（10/10 通过）。
+
+`browser/scripts/test-extension.sh` 会依次运行这三种模式。
 
 第 7 项是**关键证据**：测试页访问一个无法解析的域名 `http://rvpn-integration-test.invalid/`，
 浏览器只可能通过代理拿到页面内容（模拟宿主记录了 8 次 SOCKS5 CONNECT，页面内容为 `RVPN-MOCK-OK`），

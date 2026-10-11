@@ -36,6 +36,7 @@ const opt = (name, fallback) => {
 const CHROMIUM = opt('chromium', process.env.RVPN_CHROMIUM || '');
 const KEEP = args.includes('--keep');
 const CHALLENGE = args.includes('--challenge');
+const KILL_CORE = args.includes('--kill-core');
 
 const results = [];
 function check(name, ok, detail = '') {
@@ -96,6 +97,32 @@ async function getProxySettings(ui) {
   return ui.evaluate(() => new Promise((resolve) => {
     chrome.proxy.settings.get({ incognito: false }, (details) => resolve(details));
   }));
+}
+
+/**
+ * Kill every running mock native messaging host (the fake rvpn-core).
+ * Returns the list of killed PIDs.
+ */
+function killMockCore() {
+  const killed = [];
+  for (const entry of fs.readdirSync('/proc')) {
+    if (!/^\d+$/.test(entry)) continue;
+    let argv = [];
+    try {
+      argv = fs.readFileSync(`/proc/${entry}/cmdline`, 'utf8').split('\0').filter(Boolean);
+    } catch (e) {
+      continue;
+    }
+    // Only match when the script is an actual argument of the process, so that
+    // a shell whose command line merely mentions the file is left alone.
+    if (!argv.slice(1).some((a) => a.endsWith('mock_native_host.py'))) continue;
+    if (Number(entry) === process.pid) continue;
+    try {
+      process.kill(Number(entry), 'SIGKILL');
+      killed.push(Number(entry));
+    } catch (e) { /* already gone */ }
+  }
+  return killed;
 }
 
 async function main() {
@@ -242,6 +269,31 @@ async function main() {
         return list.length === 0 ? true : null;
       }, 10000, 300);
       check('answered challenge is cleared from the UI', !!cleared);
+    }
+
+    // 5c. the core dying must never leave a broken proxy behind
+    if (KILL_CORE) {
+      await sendToExtension(ui, { type: 'setMode', mode: 'rvpn' });
+      const reconnected = await poll(async () => {
+        const details = await getProxySettings(ui);
+        const rule = details && details.value && details.value.rules && details.value.rules.singleProxy;
+        return rule && rule.port ? rule : null;
+      }, 30000, 500);
+      check('proxy is re-applied for the second session', !!reconnected,
+        reconnected ? `socks5 ${reconnected.host}:${reconnected.port}` : 'proxy not applied');
+
+      // Find the mock core by inspecting /proc instead of pkill: a pkill
+      // pattern would also match the shell running the pattern itself.
+      const killed = killMockCore();
+
+      const dropped = await poll(async () => {
+        const details = await getProxySettings(ui);
+        const value = details && details.value;
+        const rule = value && value.rules && value.rules.singleProxy;
+        return (!rule || !rule.port) ? value : null;
+      }, 30000, 500);
+      check('proxy is cleared when the core dies', !!dropped,
+        dropped ? `mode=${dropped.mode}` : 'proxy still set after the core died');
     }
 
     // 6. back to normal mode clears the proxy
