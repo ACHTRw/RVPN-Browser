@@ -17,13 +17,22 @@
 
 * { box-sizing: border-box; }
 
+/* The fixed width lives on <body>, not on <html>: a fixed-width root element
+   overflows as soon as the vertical scrollbar appears (15px on Linux/Windows)
+   and produces a pointless horizontal scrollbar. With the width on <body> and
+   max-width:100% the layout shrinks to the available viewport instead. */
 html, body {
   margin: 0;
   padding: 0;
-  width: 400px;
   background: var(--bg);
   color: var(--text);
   font: 13px/1.5 "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", Roboto, Arial, sans-serif;
+}
+
+body {
+  width: 400px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body { padding-bottom: 10px; }
