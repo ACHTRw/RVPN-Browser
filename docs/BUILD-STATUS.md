@@ -23,6 +23,12 @@
    内置扩展 16 个资源 + `component_loader.cc` 注册）
 6. ⏳ `gn gen out/rvpn-browser` + `autoninja -C out/rvpn-browser chrome`（进行中）
 
+```
+[25082/75810] 2h21m49.31s S CXX obj/third_party/blink/public/mojom/mojom_core_blink/service_worker_container.mojom-blink.o
+```
+
+> 说明：V8 / Blink 阶段的单个编译单元很重，4 核机器上每个文件需要数十秒，因此总耗时以**小时**计；ninja/siso 支持断点续跑，中断不会丢失已完成的工作。
+
 ## 断点续跑
 
 ```bash
