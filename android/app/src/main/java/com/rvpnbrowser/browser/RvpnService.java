@@ -29,13 +29,13 @@ import java.util.concurrent.Executors;
  * <ol>
  *   <li>{@code onCreate} immediately posts the ongoing notification (a
  *       foreground service must do that within a few seconds),</li>
- *   <li>{@link Rvpncore#StartControlServer()} opens the loopback control socket,
+ *   <li>{@link Rvpncore#startControlServer()} opens the loopback control socket,
  *       whose address and token are published in
  *       {@code <filesDir>/rvpn/control.json} with mode 0600,</li>
  *   <li>the {@code start} command is sent through that socket - exactly the same
  *       protocol the desktop extension speaks,</li>
  *   <li>challenges are surfaced as notifications even when no UI is open,</li>
- *   <li>{@code onDestroy} calls {@link Rvpncore#Shutdown()} and removes the
+ *   <li>{@code onDestroy} calls {@link Rvpncore#shutdown()} and removes the
  *       control file so no stale endpoint is left behind.</li>
  * </ol>
  *
@@ -137,7 +137,7 @@ public class RvpnService extends Service implements RvpnClient.Listener {
             engineExecutor = null;
         }
         try {
-            Rvpncore.Shutdown();
+            Rvpncore.shutdown();
         } catch (Throwable t) {
             Log.w(TAG, "Shutdown() failed: " + t);
         }
@@ -162,13 +162,13 @@ public class RvpnService extends Service implements RvpnClient.Listener {
         final boolean restart = engineStarted;
         engineExecutor.execute(() -> {
             try {
-                String addr = Rvpncore.StartControlServer();
+                String addr = Rvpncore.startControlServer();
                 if (addr == null || addr.isEmpty()) {
                     engineFailed(getString(R.string.engine_unavailable_body)
                             + " (StartControlServer returned no address)");
                     return;
                 }
-                String token = Rvpncore.ControlServerToken();
+                String token = Rvpncore.controlServerToken();
                 if (token == null || token.isEmpty()) {
                     engineFailed(getString(R.string.engine_unavailable_body)
                             + " (empty control token)");
