@@ -32,11 +32,24 @@
 ## 断点续跑
 
 ```bash
-# 方式一：整条流水线（自动跳过已完成项）
-scripts/build-chromium.sh --skip-sync
+scripts/resume-all.sh --check     # 看当前状态（进度 / 进程 / 产物 / 验证结果）
+scripts/resume-all.sh             # 续跑编译 → 验证 → 打包
+scripts/resume-all.sh --publish   # 上面全部 + 上传到 GitHub Release（需要 GITHUB_TOKEN）
 
-# 方式二：只重跑编译（增量，几十秒内回到断点）
+# 只要编译（增量，几十秒内回到断点）
 CR_DIR=~/chromium/src browser/scripts/build-linux.sh --low-cost
+```
+
+### 自动验证
+
+`scripts/watch-build.sh` 会等待编译进程结束，然后自动检查产物、运行
+`browser/test/built_browser_test.mjs`（品牌 / 内置扩展 / 原生消息 / ZJU 连通性），
+结果写入 `/tmp/rvpn-build-result.txt`：
+
+```
+BUILD_OK                    # 构建成功且验证通过
+BUILD_OK_BUT_VERIFY_FAILED  # 构建成功但验证有问题（详见 /tmp/rvpn-built-browser-test.log）
+BUILD_FAIL                  # 编译报错（日志尾部会写入报告）
 ```
 
 编译本身是增量的：中断后重新运行 `autoninja` 会从断点继续，不会重头再来。
