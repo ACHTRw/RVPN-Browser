@@ -35,6 +35,7 @@ type engine struct {
 	sink       io.Writer
 
 	underlay  *underlay.Dialer
+	tracker   *trackingDialer
 	client    client.Client
 	stack     stack.Stack
 	resolver  *resolve.Resolver
@@ -68,6 +69,7 @@ func (e *engine) connect(ctx context.Context) error {
 		return fmt.Errorf("创建底层拨号器失败 / cannot create underlay dialer: %w", err)
 	}
 	e.underlay = underlayDialer
+	e.tracker = newTrackingDialer(underlayDialer)
 
 	if err := e.setupClient(ctx); err != nil {
 		return err
@@ -131,7 +133,7 @@ func (e *engine) setupClient(ctx context.Context) error {
 				Fetch:          true,
 				IncludeDomains: !cfg.SkipDomainResource,
 			},
-			UnderlayDialer:   e.underlay,
+			UnderlayDialer:   e.tracker,
 			ChallengeHandler: e.challenges,
 		})
 		ec := e.client.(*easyconnectclient.Client)
@@ -161,7 +163,7 @@ func (e *engine) setupClient(ctx context.Context) error {
 
 		at := atrustclient.NewClient(atrustclient.ClientOptions{
 			Session:        atrustclient.SessionOptions{Username: cfg.Username},
-			UnderlayDialer: e.underlay,
+			UnderlayDialer: e.tracker,
 		})
 
 		var saveClientData func([]byte) error
@@ -336,6 +338,13 @@ func (e *engine) closeResources() {
 			closer.Close()
 		}
 		e.client = nil
+	}
+	// The upstream clients keep their HTTP transports (and therefore their
+	// keep-alive sockets to the VPN server) open, so the sockets are closed
+	// from here instead.
+	if e.tracker != nil {
+		e.tracker.CloseAll()
+		e.tracker = nil
 	}
 	if e.underlay != nil {
 		_ = e.underlay.Close()

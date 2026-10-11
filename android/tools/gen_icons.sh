@@ -88,8 +88,11 @@ for i in "${!DENSITIES[@]}"; do
     render "$rs" "$TMP/art_$d.png"
     "$IM" -size "${n}x${n}" xc:none -colorspace sRGB -fill white \
           -draw "circle $((n / 2)),$((n / 2)) $((n / 2)),0" "$TMP/bg_$d.png"
+    # PNG32 forces truecolour + alpha for every density (otherwise ImageMagick
+    # may emit a palette PNG for small sizes).
     "$IM" "$TMP/bg_$d.png" -colorspace sRGB "$TMP/art_$d.png" \
-          -gravity center -composite "$dir/ic_launcher_round.png"
+          -gravity center -composite -define png:color-type=6 -define png:bit-depth=8 \
+          "PNG32:$dir/ic_launcher_round.png"
 
     for f in "$dir/ic_launcher.png" "$dir/ic_launcher_round.png"; do
         # NOTE: `magick identify` prints no trailing newline, so `read` would

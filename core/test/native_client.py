@@ -10,6 +10,7 @@ Used by the test suite and for manual diagnostics:
 import argparse
 import json
 import os
+import shutil
 import struct
 import subprocess
 import sys
@@ -19,8 +20,42 @@ import time
 DEFAULT_BIN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "bin", "rvpn-core")
 
 
+def ensure_core_built(binary=DEFAULT_BIN, quiet=True):
+    """Rebuild rvpn-core when the Go sources are newer than the binary.
+
+    Tests must never run against a stale engine: a fixed bug that is not rebuilt
+    silently turns into a failing test run.
+    """
+    binary = os.path.abspath(binary)
+    core_dir = os.path.dirname(os.path.dirname(binary))
+    if not os.path.isdir(core_dir):
+        return binary
+    try:
+        newest = 0.0
+        for root, _dirs, files in os.walk(core_dir):
+            if os.sep + "bin" in root or os.sep + "build" in root:
+                continue
+            for name in files:
+                if name.endswith(".go") or name == "go.mod":
+                    newest = max(newest, os.path.getmtime(os.path.join(root, name)))
+        binary_mtime = os.path.getmtime(binary) if os.path.exists(binary) else 0.0
+        if newest > binary_mtime:
+            go = shutil.which("go") or "/usr/local/go/bin/go"
+            if os.path.exists(go):
+                if not quiet:
+                    print("rebuilding rvpn-core (sources changed)...")
+                subprocess.run([go, "build", "-o", binary, "./cmd/rvpn-core"],
+                               cwd=core_dir, check=True,
+                               stdout=subprocess.DEVNULL if quiet else None)
+    except Exception as error:  # never fail a test run because of this
+        if not quiet:
+            print("warning: could not rebuild rvpn-core: %s" % error)
+    return binary
+
+
 class CoreClient:
     def __init__(self, binary=DEFAULT_BIN, extra_args=()):
+        binary = ensure_core_built(binary, quiet=os.environ.get("RVPN_TEST_VERBOSE") != "1")
         self.proc = subprocess.Popen(
             [binary, *extra_args],
             stdin=subprocess.PIPE,

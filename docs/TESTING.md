@@ -68,6 +68,33 @@ core/test/e2e_dummy_login.py
 意义：aTrust 的 TLS 握手、manifest/authConfig 拉取、密码提交流程、**真实验证码的下发与回传**、
 EasyConnect 的登录请求与错误解析、以及"失败后重启不泄漏监听端口"都得到了真实验证。
 
+## 2.1 反复启停泄漏测试
+
+```bash
+core/test/stress_restart.py --cycles 6
+```
+
+连续 6 次「连接 → 停止」（其中一半在验证码挂起状态直接停止），检查文件描述符 / 线程 / 内存增长：
+
+```
+cycle 0..5: stop=0.00s fds=5 threads=8 rss=17-18MB
+growth: fds +1, threads +7, rss +17MB        # 均为运行时一次性初始化
+[PASS] file descriptors stay bounded
+[PASS] thread count stays bounded
+[PASS] memory usage stays bounded
+[PASS] no listening sockets left after stop (fds=5)
+6 restart cycles completed without leaks
+```
+
+该测试在开发过程中真实抓到了两个缺陷并已修复：
+
+1. **停止时挂起 10 秒**：等待验证码的协议 goroutine 在会话结束时没有被唤醒（补上 `done` 通道取消）；
+2. **每个会话泄漏一个套接字**：上游 aTrust 客户端持有自己的 HTTP transport，其 keep-alive 连接从不关闭；
+   本项目的 `rvpn/underlay.go` 用跟踪式底层拨号器接管所有连接，停止时统一关闭，
+   修复后 fds 在 6 个循环中恒定不变。
+
+`core/test/native_client.py` 会在 Go 源码比二进制更新时自动重新构建，避免"用旧二进制测新代码"。
+
 ## 3. 控制通道测试（Android 使用）
 
 ```bash
