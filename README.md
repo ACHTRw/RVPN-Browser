@@ -11,6 +11,12 @@ JSON 协议（[docs/PROTOCOL.md](docs/PROTOCOL.md)）解耦，因此同一个引
 - RVPN 引擎：基于 [Mythologyli/zju-connect](https://github.com/Mythologyli/zju-connect) 的协议实现
   （aTrust L3 / EasyConnect L2、资源分流、远端 DNS、验证码与人机校验流程）。
 
+## 界面
+
+| 工具栏弹窗（RVPN 模式已连接 + 验证码输入） | 设置页 |
+|---|---|
+| ![弹窗](docs/images/popup-zh.png) | ![设置](docs/images/options-zh.png) |
+
 ## 功能
 
 | 功能 | 说明 |
