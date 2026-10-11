@@ -124,5 +124,6 @@ docs/                 协议、架构、构建、使用、测试文档
 
 ## 许可
 
-本项目采用 **AGPL-3.0**（因为核心链接了 AGPL-3.0 的 [zju-connect](https://github.com/Mythologyli/zju-connect)）。
+本项目采用 **AGPL-3.0**（见 [LICENSE](LICENSE)：核心链接了 AGPL-3.0 的
+[zju-connect](https://github.com/Mythologyli/zju-connect)）。
 Thorium 部分遵循其 BSD-3-Clause 许可；详见 [NOTICE.md](NOTICE.md)。
