@@ -24,6 +24,17 @@ JSON 协议（[docs/PROTOCOL.md](docs/PROTOCOL.md)）解耦，因此同一个引
 | 诊断 | 连通性自检（`selftest`）、实时日志、复制诊断信息 |
 | 平台 | Linux（x64/arm64）、Android（arm64/armv7；WebView 应用已可直接构建，源码构建的浏览器 APK 见下文） |
 
+## 下载
+
+| 平台 | 文件 | 说明 |
+|---|---|---|
+| Android | `rvpn-browser-1.0.0-android.apk` | 已签名 release APK（arm64-v8a / armeabi-v7a / x86_64），minSdk 26 |
+| Linux | `rvpn-browser-1.0.0-linux-amd64.tar.gz` | 便携包：RVPN 引擎 + 扩展 + 启动器 + 安装脚本 |
+| Linux | `rvpn-core-linux-amd64` / `-arm64` | 独立 RVPN 引擎 |
+| Android | `rvpn-core-android-arm64` | 独立 RVPN 引擎（arm64） |
+
+见 [Releases](https://github.com/ACHTRw/RVPN-Browser/releases)。
+
 ## 快速开始（Linux，不需要编译 Chromium）
 
 ```bash
@@ -73,6 +84,20 @@ android/build.sh                          # 产物：android/app/build/outputs/a
 
 Android 应用把 RVPN 引擎运行在独立的 `:rvpn` 进程（崩溃隔离），通过回环 TCP + 令牌与界面通信；
 RVPN 模式下用 `ProxyController` 把**本应用**的所有 WebView 流量指向本地代理，不影响系统全局代理。
+
+## 验证状态
+
+| 项目 | 状态 | 证据 |
+|---|---|---|
+| RVPN 引擎（Go） | ✅ 通过 | 24 个单元测试（含 `-race`）、20/20 真实服务器协议测试、6 轮启停无泄漏 |
+| 交互式认证 | ✅ 通过 | 真实 ZJU aTrust 服务端下发点选验证码并成功回传（见 [docs/TESTING.md](docs/TESTING.md)） |
+| 桌面扩展逻辑 | ✅ 通过 | 124 + 74 项无浏览器逻辑测试（模拟 `chrome.*` 与协议级假核心） |
+| 浏览器集成 | ✅ 通过 | 真实 Chromium 中 8/8：模式切换、`chrome.proxy` 生效、**流量确实经代理**、断开清除代理 |
+| 真实引擎链路 | ✅ 通过 | 浏览器 → 扩展 → 原生消息 → 真实 `rvpn-core`：4/4（含连通真实 `vpn.zju.edu.cn:443`） |
+| Linux 安装/启动器 | ✅ 通过 | 发布包实测：解压 → 安装 → 启动器生成正确命令行 |
+| Android APK | ✅ 构建通过 | debug + release（R8/资源压缩）均成功，内含三个 ABI 的 Go 引擎；已签名 |
+| Android 运行 | ⚠️ 待真机验证 | 构建环境无 KVM，无法跑模拟器；运行路径与桌面共用同一核心协议 |
+| Chromium 源码构建 | ⏳ 进行中 | 拉取约 30 GB 源码/依赖中；补丁脚本已对真实源码做过 dry-run 校验 |
 
 ## 仓库结构
 
